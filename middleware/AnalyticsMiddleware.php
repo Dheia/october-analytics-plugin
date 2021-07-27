@@ -51,32 +51,39 @@ class AnalyticsMiddleware
         $newview = false;
 
         // Handle Page
+        // Each URL receives its own entry, mainly used for linking, indexing and undetailed storage
+        // of views and visits which are bypassed in the template.
         $page = Page::where('method', $method)->where('path', '=', $handle)->first();
         if ($page === null) {
             $page = Page::create([
                 'hash'      => sha1($method . ' ' . $handle),
                 'method'    => $method,
                 'path'      => $handle,
-                'views'     => 0,
-                'unique'    => 0
+                'views'     => 0,           // Total number of views
+                'visits'    => 0            // Total number of unique visits / day
             ]);
             $newpage = true;
         }
 
         // Handle Visitor
+        // Each Visitor receives his own entry, including the last-seen user agents and the number 
+        // of generated views and visits / day. The unique hash cannot be traced back to the user.
         $user = $page->visitors()->where('hash', '=', $unique)->first();
         if (empty($user)) {
             $user = new Visitor([
                 'hash'      => $unique,
                 'bot'       => 0.0,
                 'agent'     => null,
-                'visits'    => 0
+                'views'     => 0,           // Total number of generated views
+                'visits'    => 0            // Total number of generated unique visits / day
             ]);
             $user->save();
             $newuser = true;
         }
 
         // Handle View
+        // Each single unique visit / day receives its own entry, including the last-seen request 
+        // referrer, response, status code and number of views generated on one visit.
         $view = $page->views()->where([
             ['analytics_id', '=', $page->id],
             ['visitor_id', '=', $user->id]
@@ -85,9 +92,9 @@ class AnalyticsMiddleware
             $view = new View([
                 'type'              => 'untracked',
                 'order'             => 0,
-                'visits'            => 0,
+                'views'             => 0,
                 'request'           => [],
-                'referer'           => null,
+                'referrer'          => null,
                 'response'          => $response->headers->all(),
                 'response_status'   => $response->getStatusCode()
             ]);

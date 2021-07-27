@@ -25,7 +25,7 @@ class CreateAnalyticsTable extends Migration
             $table->string('method', 16);
             $table->text('path', 16);
             $table->integer('views')->unsigned()->default(0);
-            $table->integer('unique')->unsigned()->default(0);
+            $table->integer('visits')->unsigned()->default(0);
             $table->timestamps();
         });
 
@@ -36,9 +36,11 @@ class CreateAnalyticsTable extends Migration
             $table->string('hash', 64);
             $table->float('bot')->default(0.0);
             $table->text('agent')->nullable();
+            $table->integer('views')->unsigned()->default(0);
             $table->integer('visits')->unsigned()->default(0);
-            $table->timestamp('first_visit');
-            $table->timestamp('last_seen');
+            $table->timestamp('first_visit');       // First Visit
+            $table->timestamp('last_visit');        // Last Unique Visit
+            $table->timestamp('last_seen');         // Last View
         });
 
         Schema::create('synder_analytics_views', function (Blueprint $table) {
@@ -49,9 +51,9 @@ class CreateAnalyticsTable extends Migration
             $table->bigInteger('visitor_id')->unsigned();
             $table->enum('type', ['entrypoint', 'followup', 'untracked'])->default('untracked');
             $table->integer('order')->default(0);
-            $table->integer('visits')->unsigned()->default(0);
+            $table->integer('views')->unsigned()->default(0);
             $table->text('request')->nullable();
-            $table->text('referer')->nullable();
+            $table->text('referrer')->nullable();
             $table->text('response')->nullable();
             $table->integer('response_status')->nullable();
             $table->timestamps();
@@ -67,9 +69,9 @@ class CreateAnalyticsTable extends Migration
             $table->string('hash', 64)->unique();
             $table->string('host', 255);
             $table->text('url');
-            $table->integer('visits')->unsigned()->default(0);
-            $table->timestamp('first');
-            $table->timestamp('last');
+            $table->integer('views')->unsigned()->default(0);
+            $table->timestamp('first_view');        // First View
+            $table->timestamp('last_view');         // Last View
         });
     }
 
