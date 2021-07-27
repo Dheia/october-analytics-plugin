@@ -5,7 +5,7 @@ namespace Synder\Analytics\Widgets;
 use Backend\Classes\ReportWidgetBase;
 
 
-class Statistics extends ReportWidgetBase
+class SimpleStatistics extends ReportWidgetBase
 {
     /**
      * Render Widget

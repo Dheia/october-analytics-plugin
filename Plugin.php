@@ -6,8 +6,8 @@ use Cms\Classes\CmsController;
 use System\Classes\PluginBase;
 
 use Synder\Analytics\Middleware\AnalyticsMiddleware;
-use Synder\Analytics\Widgets\Statistics;
-
+use Synder\Analytics\Widgets\SimpleReferrers;
+use Synder\Analytics\Widgets\SimpleStatistics;
 
 class Plugin extends PluginBase
 {
@@ -63,9 +63,26 @@ class Plugin extends PluginBase
      */
     public function registerReportWidgets()
     {
+
+        //
+        //  Simple Statistics
+        //      -> Show Visits of last 30 days
+        //      -> Show Unique of last 30 days 
+        //
+        //  Simple Referrer List
+        //      -> Show List of most used referrers
+        //
+        //  Simple Hot Pages
+        //      -> Show List of most visited links
+        //  
+
         return [
-            Statistics::class => [
-                'label'     => 'synder.analytics::lang.widget.label',
+            SimpleStatistics::class => [
+                'label'     => 'synder.analytics::lang.widgets.statistics.label',
+                'context'   => 'dashboard'
+            ],
+            SimpleReferrers::class => [
+                'label'     => 'synder.analytics::lang.widgets.referrers.label',
                 'context'   => 'dashboard'
             ]
         ];
