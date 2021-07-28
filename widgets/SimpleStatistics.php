@@ -14,7 +14,7 @@ class SimpleStatistics extends ReportWidgetBase
      */
     protected function loadAssets()
     {
-        $this->addCss(['../../statistics/_widget.css']);
+        $this->addCss(['/../../statistics/_widget.css']);
     }
 
     /**
