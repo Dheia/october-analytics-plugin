@@ -2,8 +2,9 @@
 
 namespace Synder\Analytics\Models;
 
-use October\Rain\Database\Model;
 use Session;
+use October\Rain\Database\Model;
+
 
 class Visitor extends Model
 {
@@ -30,7 +31,7 @@ class Visitor extends Model
      * @var array
      */
     public $belongsToMany = [
-        'views' => View::class
+        'requests' => Request::class
     ];
 
     /**
@@ -42,9 +43,11 @@ class Visitor extends Model
         'hash',
         'bot',
         'agent',
-        'visits'
+        'views',
+        'visits',
+        'last_visit'
     ];
-
+    
     /**
      * Generate Hash
      *

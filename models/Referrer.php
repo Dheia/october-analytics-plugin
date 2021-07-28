@@ -10,12 +10,12 @@ class Referrer extends Model
     /**
      * created_at column name
      */
-    const CREATED_AT = 'first';
+    const CREATED_AT = 'first_view';
 
     /**
      * updated_at column name
      */
-    const UPDATED_AT = 'last';
+    const UPDATED_AT = 'last_view';
 
     /**
      * The table associated with the model.
@@ -33,6 +33,6 @@ class Referrer extends Model
         'hash',
         'host',
         'url',
-        'visits'
+        'views'
     ];
 }
