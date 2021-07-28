@@ -21,6 +21,10 @@ class SimpleSystems extends ReportWidgetBase
         $this->vars['oslist'] = [];
 
         foreach ($data AS $item) {
+            if (empty($item->agent)) {
+                continue;   
+            }
+            
             $browser = $item->agent['client']['name'];
             if (!array_key_exists($browser, $this->vars['browserlist'])) {
                 $this->vars['browserlist'][$browser] = 0;
