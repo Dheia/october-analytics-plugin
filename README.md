@@ -5,6 +5,8 @@ Simple analyse the traffic of your website without relying on an external servic
 version of this plugin (look at 'Advanced Analytics for OctoberCMS' for more information) does not 
 use JavaScript and can be used "Consent-Free" according to the GDPR (See 'Legal Information' below).
 
+**Attention:** Synder.Analytics requires PHP 7.4+!
+
 
 Legal Information
 -----------------
@@ -31,12 +33,19 @@ precise as with JavaScript-based solutions.
 
 -   Simple URL and Visit / View counters
     -   Also usable on your template (see Documentation for more information)
--   Simple Response code tracking, to find 400 error pages 
 -   Simple but limited Referrer collection
 -   Simple but limited Browser and OS detection (JavaScript-less)
--   Simple but limited trace-tracking
 -   Simple but limited Bot-Detection (Humanity testing)
--   A bunch of neat statistics, including 3 awesome dashboard widgets with charts
+-   A bunch of neat statistics within 4 dashboard widgets
+
+
+### Coming Soon
+
+The following features will be added soon:
+
+-   An own admin page with extended access to the data collections
+-   Simple interface for Response code tracking, ex. to find 400 error pages 
+-   Simple but limited trace/route -tracking
 
 
 ### Bot-Detection
@@ -74,7 +83,8 @@ addition for this plugin and won't replace the free version.
 Requirements
 ------------
 
--   PHP 7.2+
+-   PHP 7.4+
+-   [matomo/device-detector](https://github.com/matomo-org/device-detector) 4.3+
 
 
 Copyright & License

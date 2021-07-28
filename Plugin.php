@@ -6,8 +6,10 @@ use Backend;
 use Event;
 use Backend\Classes\NavigationManager;
 use Cms\Classes\CmsController;
+use Cms\Classes\Page as RequestPage;
 use System\Classes\PluginBase;
 
+use Synder\Analytics\Models\Page;
 use Synder\Analytics\Middleware\AnalyticsMiddleware;
 use Synder\Analytics\Widgets\SimplePages;
 use Synder\Analytics\Widgets\SimpleReferrers;
@@ -60,6 +62,8 @@ class Plugin extends PluginBase
         CmsController::extend(function($controller) {
             $controller->middleware(AnalyticsMiddleware::class);
         });
+        
+        RequestPage::extend(fn($model) => $this->extendPageModel($model));
 
         //@todo
         //Event::listen('backend.menu.extendItems', function (NavigationManager $manager) {
@@ -72,6 +76,35 @@ class Plugin extends PluginBase
         //        'order'       => 10
         //    ]);
         //});
+    }
+    
+    /**
+     * Extend Post Model
+     *
+     * @param \Cms\Classes\Page $model
+     * @return void
+     */
+    protected function extendPageModel(RequestPage $model)
+    {
+        $model->bindEvent('model.afterFetch', function() use ($model) {
+            $method = strtoupper(request()->getRealMethod());
+            $handle = strtolower(request()->getPathInfo());
+
+            $page = Page::where('hash', '=', sha1($method . ' ' . $handle))->first();
+            if ($page) {
+                $stats = [
+                    'views' => $page->views,
+                    'visits' => $page->visits
+                ];
+            } else {
+                $stats = [
+                    'views' => 1,
+                    'visits' => 1
+                ];
+            }
+
+            $model->addDynamicProperty('synderstats', $stats);
+        });
     }
 
     /**
