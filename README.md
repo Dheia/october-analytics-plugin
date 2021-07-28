@@ -54,6 +54,8 @@ The following features will be added soon:
 
 ### Bot-Detection
 
+**Not included yet, Work in Progress!**
+
 The Bot-Detection is based on a value counting from 0.1 (should be human) to 5.0 (should be bot) 
 and is based on the following values. If the value 0.0 is displayed, this means that no usable data 
 has been received.
