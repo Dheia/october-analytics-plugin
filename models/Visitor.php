@@ -35,6 +35,15 @@ class Visitor extends Model
     ];
 
     /**
+     * JSONable Columns
+     * 
+     * @var array
+     */
+    public $jsonable = [
+        'agent'
+    ];
+
+    /**
      * Fillable Columns
      *
      * @var array
@@ -50,16 +59,13 @@ class Visitor extends Model
     
     /**
      * Generate Hash
+     * @todo
      *
      * @return string
      */
     static public function generateHash()
     {
-        $user = Session::get('Synder.Analytics.User', null);
-        if (empty($user)) {
-            $user = sha1($_SERVER['REMOTE_ADDR'] . Session::getId() . bin2hex(random_bytes(8)));
-            Session::put('Synder.Analytics.User', $user);
-        }
-        return $user;
+        $value = $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ?? Session::getId());
+        return hash_hmac('sha1', $value, env('APP_KEY'));
     }
 }

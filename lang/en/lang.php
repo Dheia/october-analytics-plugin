@@ -14,7 +14,7 @@ return [
             'tr_urls' => 'Related URLs',
             'tr_views' => 'Views',
             'tr_last' => 'Last Visit',
-            'table_empty' => 'No Referrers available yet.'
+            'table_empty' => 'No referrers available yet.'
         ],
 
         'statistics' => [
@@ -23,6 +23,22 @@ return [
             'views' => 'Views',
             'visits' => 'Visits',
             'visitors' => 'Visitors'
+        ],
+
+        'systems' => [
+            'label' => 'Simple Statistics - Browser / OS Usage',
+            'title' => 'Synder Statistics - Browser / OS Usage',
+            'empty' => 'No data available'
+        ],
+
+        'pages' => [
+            'label' => 'Simple Statistics - Top Pages',
+            'title' => 'Synder Statistics - Top Pages',
+            'tr_path' => 'Method - URL',
+            'tr_views' => 'Views',
+            'tr_visits' => 'Visits',
+            'tr_last' => 'Last Visit',
+            'table_empty' => 'No data available yet.'
         ]
     ],
 

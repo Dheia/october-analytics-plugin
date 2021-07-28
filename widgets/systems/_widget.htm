@@ -1,0 +1,43 @@
+<div class="report-widget">
+    <h3><?= e(trans('synder.analytics::lang.widgets.systems.title')) ?></h3>
+
+    <div class="control-list">
+        <div class="row">
+            <div class="col-xs-12 col-md-6" style="height: 220px;">
+                <div
+                    class="control-chart centered wrap-legend"
+                    data-control="chart-pie"
+                    data-size="200"
+                    data-center-text="100">
+                    <ul>
+                        <?php if (count($browserlist) > 0): ?>
+                            <?php foreach ($browserlist AS $browser => $count): ?>
+                                <li><?= e($browser) ?> <span><?= e($count) ?></span></li>
+                            <?php endforeach ?>
+                        <?php else: ?>
+                            <li><?= e(trans('synder.analytics::lang.widgets.systems.empty')) ?> <span>0</span></li>
+                        <?php endif ?>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-md-6" style="height: 220px;">
+                <div
+                    class="control-chart centered wrap-legend"
+                    data-control="chart-pie"
+                    data-size="200"
+                    data-center-text="100">
+                    <ul>
+                        <?php if (count($oslist) > 0): ?>
+                            <?php foreach ($oslist AS $os => $count): ?>
+                                <li><?= e($os) ?> <span><?= e($count) ?></span></li>
+                            <?php endforeach ?>
+                        <?php else: ?>
+                            <li><?= e(trans('synder.analytics::lang.widgets.systems.empty')) ?> <span>0</span></li>
+                        <?php endif ?>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

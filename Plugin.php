@@ -9,8 +9,10 @@ use Cms\Classes\CmsController;
 use System\Classes\PluginBase;
 
 use Synder\Analytics\Middleware\AnalyticsMiddleware;
+use Synder\Analytics\Widgets\SimplePages;
 use Synder\Analytics\Widgets\SimpleReferrers;
 use Synder\Analytics\Widgets\SimpleStatistics;
+use Synder\Analytics\Widgets\SimpleSystems;
 
 
 class Plugin extends PluginBase
@@ -49,6 +51,7 @@ class Plugin extends PluginBase
     
     /**
      * Boot Plugin
+     * @todo
      *
      * @return void
      */
@@ -58,16 +61,17 @@ class Plugin extends PluginBase
             $controller->middleware(AnalyticsMiddleware::class);
         });
 
-        Event::listen('backend.menu.extendItems', function (NavigationManager $manager) {
-            $manager->addSideMenuItem('October.Backend', 'dashboard', 'statistics', [
-                'label'       => 'synder.analytics::lang.backend.title',
-                'icon'        => 'icon-dashboard',
-                'iconSvg'     => 'modules/backend/assets/images/dashboard-icon.svg',
-                'url'         => Backend::url('backend'),
-                'permissions' => ['backend.access_dashboard'],
-                'order'       => 10
-            ]);
-        });
+        //@todo
+        //Event::listen('backend.menu.extendItems', function (NavigationManager $manager) {
+        //    $manager->addSideMenuItem('October.Backend', 'dashboard', 'statistics', [
+        //        'label'       => 'synder.analytics::lang.backend.title',
+        //        'icon'        => 'icon-dashboard',
+        //        'iconSvg'     => 'modules/backend/assets/images/dashboard-icon.svg',
+        //        'url'         => Backend::url('backend'),
+        //        'permissions' => ['backend.access_dashboard'],
+        //        'order'       => 10
+        //    ]);
+        //});
     }
 
     /**
@@ -77,19 +81,6 @@ class Plugin extends PluginBase
      */
     public function registerReportWidgets()
     {
-
-        //
-        //  Simple Statistics
-        //      -> Show Visits of last 30 days
-        //      -> Show Unique of last 30 days 
-        //
-        //  Simple Referrer List
-        //      -> Show List of most used referrers
-        //
-        //  Simple Hot Pages
-        //      -> Show List of most visited links
-        //  
-
         return [
             SimpleStatistics::class => [
                 'label'     => 'synder.analytics::lang.widgets.statistics.label',
@@ -97,6 +88,14 @@ class Plugin extends PluginBase
             ],
             SimpleReferrers::class => [
                 'label'     => 'synder.analytics::lang.widgets.referrers.label',
+                'context'   => 'dashboard'
+            ],
+            SimpleSystems::class => [
+                'label'     => 'synder.analytics::lang.widgets.systems.label',
+                'context'   => 'dashboard'
+            ],
+            SimplePages::class => [
+                'label'     => 'synder.analytics::lang.widgets.pages.label',
                 'context'   => 'dashboard'
             ]
         ];

@@ -38,9 +38,9 @@ class CreateAnalyticsTable extends Migration
             $table->text('agent')->nullable();
             $table->integer('views')->unsigned()->default(0);
             $table->integer('visits')->unsigned()->default(0);
-            $table->timestamp('first_visit');       // First Visit
-            $table->timestamp('last_visit');        // Last Unique Visit
-            $table->timestamp('last_seen');         // Last View
+            $table->timestamp('first_visit');
+            $table->timestamp('last_visit');
+            $table->timestamp('last_seen');
         });
 
         Schema::create('synder_analytics_requests', function (Blueprint $table) {
@@ -70,8 +70,8 @@ class CreateAnalyticsTable extends Migration
             $table->string('host', 255);
             $table->text('url');
             $table->integer('views')->unsigned()->default(0);
-            $table->timestamp('first_view');        // First View
-            $table->timestamp('last_view');         // Last View
+            $table->timestamp('first_view');
+            $table->timestamp('last_view');
         });
     }
 

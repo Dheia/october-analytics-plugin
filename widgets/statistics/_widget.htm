@@ -26,5 +26,28 @@
         </span>
     </div>
 
-    <div class="my-container"></div>
+    <div class="chart-legend">
+        <table>
+            <tr>
+                <td class="indicator">
+                    <i style="background-color: #86CB43;"></i>
+                </td>
+                <td><?= e(trans('synder.analytics::lang.widgets.statistics.views')) ?></td>
+            </tr>
+            
+            <tr>
+                <td class="indicator">
+                    <i style="background-color: #008dc9;"></i>
+                </td>
+                <td><?= e(trans('synder.analytics::lang.widgets.statistics.visits')) ?></td>
+            </tr>
+            
+            <tr>
+                <td class="indicator">
+                    <i style="background-color: #FF2D20;"></i>
+                </td>
+                <td><?= e(trans('synder.analytics::lang.widgets.statistics.visitors')) ?></td>
+            </tr>
+        </table>
+    </div>
 </div>
