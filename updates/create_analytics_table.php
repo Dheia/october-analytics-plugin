@@ -39,7 +39,7 @@ class CreateAnalyticsTable extends Migration
             $table->integer('views')->unsigned()->default(0);
             $table->integer('visits')->unsigned()->default(0);
             $table->timestamp('first_visit');
-            $table->timestamp('last_visit');
+            $table->timestamp('last_visit')->nullable();
             $table->timestamp('last_seen');
         });
 
