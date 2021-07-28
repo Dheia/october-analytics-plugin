@@ -29,7 +29,7 @@ Simple Analytics does not include any JavaScript on your website, all informatio
 the server-site. While this should actually provide enough data, it is of course not always as 
 precise as with JavaScript-based solutions. 
 
--   Simple URL and Unqiue Visitor / View counters
+-   Simple URL and Visit / View counters
     -   Also usable on your template (see Documentation for more information)
 -   Simple Response code tracking, to find 400 error pages 
 -   Simple but limited Referrer collection
@@ -49,6 +49,7 @@ The evaluated data (datas marked with * must be configured before they can be us
 
 -   User Agent (The good bots reveal themselves, _some humans disguise it_)
 -   Browser / OS (Highly outdated browsers or OS information are mostly used by bots, _or doctors_)
+-	Referrer
 -   \* robots.txt calls (Some bots intentionally call links inside the robots.txt file, _some humans do as well_)
 -   \* invisible link (Many bots are not interested in whether you can see a link or not, _Humans do_)
 
