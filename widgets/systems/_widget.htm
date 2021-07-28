@@ -8,7 +8,7 @@
                     class="control-chart centered wrap-legend"
                     data-control="chart-pie"
                     data-size="200"
-                    data-center-text="100">
+                    data-center-text="<?= e($counter) ?>">
                     <ul>
                         <?php if (count($browserlist) > 0): ?>
                             <?php foreach ($browserlist AS $browser => $count): ?>
@@ -26,7 +26,7 @@
                     class="control-chart centered wrap-legend"
                     data-control="chart-pie"
                     data-size="200"
-                    data-center-text="100">
+                    data-center-text="<?= e($counter) ?>">
                     <ul>
                         <?php if (count($oslist) > 0): ?>
                             <?php foreach ($oslist AS $os => $count): ?>

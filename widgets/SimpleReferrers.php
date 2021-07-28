@@ -20,10 +20,11 @@ class SimpleReferrers extends ReportWidgetBase
             ->groupBy('host')
             ->orderByDesc('views')
             ->orderByDesc('urls')
+            ->orderByDesc('last_view')
             ->limit(5)
             ->get()
             ->toArray();
-        
+
         $this->vars['referrers'] = $referrers ?? [];
         return $this->makePartial('$/synder/analytics/widgets/referrers/_widget.htm');
     }

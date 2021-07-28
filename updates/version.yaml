@@ -1,3 +1,8 @@
 1.0.0:
     - First Version.
     - create_analytics_table.php
+1.0.1:
+    - Small Bugfixes.
+    - Fix empty user agent array.
+    - Fix empty centered counter on browser / os usage charts.
+    - Skip Favicon.ico.

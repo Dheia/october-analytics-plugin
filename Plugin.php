@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Synder\Analytics;
 
@@ -21,11 +21,11 @@ class Plugin extends PluginBase
 {
     /**
      * Plugin dependencies
-     * 
+     *
      * @var array
      */
     public $require = [];
-    
+
     /**
      * Plugin Details
      *
@@ -50,7 +50,7 @@ class Plugin extends PluginBase
     {
         // Nothing to do here...
     }
-    
+
     /**
      * Boot Plugin
      * @todo
@@ -62,7 +62,7 @@ class Plugin extends PluginBase
         CmsController::extend(function($controller) {
             $controller->middleware(AnalyticsMiddleware::class);
         });
-        
+
         RequestPage::extend(fn($model) => $this->extendPageModel($model));
 
         //@todo
@@ -77,7 +77,7 @@ class Plugin extends PluginBase
         //    ]);
         //});
     }
-    
+
     /**
      * Extend Post Model
      *

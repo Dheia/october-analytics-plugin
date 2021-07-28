@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Synder\Analytics\Middleware;
 
@@ -67,16 +67,18 @@ class AnalyticsMiddleware
         if (!empty($user_agent)) {
             $dd = new DeviceDetector($_SERVER['HTTP_USER_AGENT']);
             $dd->parse();
-            
-            $is_bot = $dd->isBot();
-            $user_agent = [
-                'agent'     => $_SERVER['HTTP_USER_AGENT'],
-                'client'    => $dd->getClient(),
-                'os'        => $dd->getOs(),
-                'device'    => $dd->getDeviceName(),
-                'brand'     => $dd->getBrandName(),
-                'model'     => $dd->getModel()
-            ];
+
+            if (!empty($dd->getClient())) {
+                $is_bot = $dd->isBot();
+                $user_agent = [
+                    'agent'     => $_SERVER['HTTP_USER_AGENT'],
+                    'client'    => $dd->getClient(),
+                    'os'        => $dd->getOs(),
+                    'device'    => $dd->getDeviceName(),
+                    'brand'     => $dd->getBrandName(),
+                    'model'     => $dd->getModel()
+                ];
+            }
         }
 
         // New Status
@@ -144,11 +146,16 @@ class AnalyticsMiddleware
             return false;
         }
 
+        // Skip Favicon
+        if (strpos($handle, 'favicon.ico') !== false) {
+            return false;
+        }
+
         // Return Page
         return Page::firstOrNew([
             'hash'      => sha1($method . ' ' . $handle),
         ], [
-            'method'    => $method, 
+            'method'    => $method,
             'path'      => $handle,
             'views'     => 0,
             'visits'    => 0
@@ -160,7 +167,7 @@ class AnalyticsMiddleware
      *
      * @param \Illuminate\Http\Request $request
      * @param \Illuminate\Http\Response $response
-     * @param \Synder\Analytics\Models\Page $page 
+     * @param \Synder\Analytics\Models\Page $page
      * @return \Synder\Analytics\Models\Visitor|false
      */
     public function getUser(HttpRequest $request, $response)
@@ -187,7 +194,7 @@ class AnalyticsMiddleware
      *
      * @param \Illuminate\Http\Request $request
      * @param \Illuminate\Http\Response $response
-     * @param \Synder\Analytics\Models\Page $page 
+     * @param \Synder\Analytics\Models\Page $page
      * @param \Synder\Analytics\Models\Visitor $user
      * @return \Synder\Analytics\Models\Request|false
      */
@@ -207,7 +214,7 @@ class AnalyticsMiddleware
                 $view = null;
             }
         }
-        
+
         // Create new View
         if (empty($view)) {
             return new Request([
