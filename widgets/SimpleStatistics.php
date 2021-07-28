@@ -8,6 +8,16 @@ use Synder\Analytics\Models\Request;
 class SimpleStatistics extends ReportWidgetBase
 {
     /**
+     * Add Widget Assets
+     * 
+     * @return void
+     */
+    protected function loadAssets()
+    {
+        $this->addCss(['../../statistics/_widget.css']);
+    }
+
+    /**
      * Render Widget
      *
      * @return mixed

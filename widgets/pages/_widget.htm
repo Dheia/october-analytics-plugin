@@ -1,0 +1,35 @@
+<div class="report-widget">
+    <h3><?= e(trans('synder.analytics::lang.widgets.pages.title')) ?></h3>
+
+    <div class="control-list">
+        <table class="table data">
+            <thead>
+                <tr>
+                    <th class="active"><span><?= e(trans('synder.analytics::lang.widgets.pages.tr_path')) ?></span></th>
+                    <th><span><?= e(trans('synder.analytics::lang.widgets.pages.tr_views')) ?></span></th>
+                    <th><span><?= e(trans('synder.analytics::lang.widgets.pages.tr_visits')) ?></span></th>
+                    <th><span><?= e(trans('synder.analytics::lang.widgets.pages.tr_last')) ?></span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (!empty($pages)): ?>
+                    <?php foreach($pages AS $page): ?>
+                        <tr>
+                            <td><?= $page['method'] ?> <?= $page['path'] ?></td>
+                            <td><?= $page['views'] ?></td>
+                            <td><?= $page['visits'] ?></td>
+                            <td><?= $page['last_viewed'] ?></td>
+                        </tr>
+                    <?php endforeach ?>
+                <?php else: ?>
+                    <tr>
+                        <td align="center" colspan="4">
+                            <i class="text-muted"><?= e(trans('synder.analytics::lang.widgets.pages.table_empty')) ?></i>
+                        </td>
+                    </tr>
+                <?php endif ?>
+            </tbody>
+        </table>
+    </div>
+
+</div>
