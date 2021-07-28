@@ -24,6 +24,9 @@ class SimpleSystems extends ReportWidgetBase
             if (empty($item->agent)) {
                 continue;   
             }
+            if (empty($item->agent['client'])) {
+                continue;
+            }
             
             $browser = $item->agent['client']['name'];
             if (!array_key_exists($browser, $this->vars['browserlist'])) {
