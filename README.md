@@ -17,7 +17,7 @@ Legal Information
 
 The Simple Version of this plugin is designed to be used consent-free, since it does NOT use 
 cookies or store any personal or similar related data in a way that can be traced back to the user. 
-The user tracking is based on a database-stored hashed value, consiting of the users IP address, 
+The user tracking is based on a database-stored hashed value, consisting of the users IP address, 
 the user agent as well as the application key of your OctoberCMS website. Of course, this reduces 
 the evaluability of the individual view trace - especially across browsers and devices - but as the 
 name suggests, this is just a simple analytics system and not Google Analytics or Matomo. 
@@ -32,14 +32,13 @@ Features
 --------
 
 Simple Analytics does not include any JavaScript on your website, all information are collected on 
-the server-site. While this should actually provide enough data, it is of course not always as 
+the server-side. While this should actually provide enough data, it is of course not always as 
 precise as with JavaScript-based solutions. 
 
 -   Simple URL and Visit / View counters
     -   Also usable on your template (see Documentation for more information)
 -   Simple but limited Referrer collection
 -   Simple but limited Browser and OS detection (JavaScript-less)
--   Simple but limited Bot-Detection (Humanity testing)
 -   A bunch of neat statistics within 4 dashboard widgets
 
 
@@ -50,6 +49,7 @@ The following features will be added soon:
 -   An own admin page with extended access to the data collections
 -   Simple interface for Response code tracking, ex. to find 400 error pages 
 -   Simple but limited trace/route -tracking
+-   Simple but limited Bot-Detection (Humanity testing)
 
 
 ### Bot-Detection
