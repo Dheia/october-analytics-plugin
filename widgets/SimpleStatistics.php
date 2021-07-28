@@ -8,13 +8,21 @@ use Synder\Analytics\Models\Request;
 class SimpleStatistics extends ReportWidgetBase
 {
     /**
+     * @inheritDoc
+     */
+    public function __construct($controller, $properties = [])
+    {
+        parent::__construct($controller, $properties);
+    }
+
+    /**
      * Add Widget Assets
      * 
      * @return void
      */
     protected function loadAssets()
     {
-        $this->addCss(['/../../statistics/_widget.css']);
+        $this->addCss('../../assets/statistics.css');
     }
 
     /**
