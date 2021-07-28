@@ -5,4 +5,5 @@
     - Small Bugfixes.
     - Fix empty user agent array.
     - Fix empty centered counter on browser / os usage charts.
-    - Skip Favicon.ico.
+    - Fix missing browser or os agent items.
+    - Skip Favicon.ico logs.
