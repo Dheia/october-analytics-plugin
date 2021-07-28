@@ -5,14 +5,14 @@ namespace Synder\Analytics\Models;
 use October\Rain\Database\Model;
 
 
-class View extends Model
+class Request extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'synder_analytics_views';
+    protected $table = 'synder_analytics_requests';
 
     /**
      * Belongs To Relationships
@@ -48,7 +48,9 @@ class View extends Model
     public $fillable = [
         'type',
         'order',
+        'views',
         'request',
+        'referrer',
         'response',
         'response_status',
     ];

@@ -20,8 +20,8 @@ class Page extends Model
      * @var array
      */
     public $hasMany = [
-        'views' => [
-            View::class,
+        'requests' => [
+            Request::class,
             'key' => 'analytics_id' 
         ]
     ];
@@ -34,10 +34,10 @@ class Page extends Model
     public $hasManyThrough = [
         'visitors' => [
             Visitor::class,
-            'through'       => View::class,
-            'key'           => 'analytics_id',      # synder_analytics_views.analytics_id
-            'throughKey'    => 'id',                # synder_analytics_visitors.id
-            'otherKey'      => 'visitor_id'         # synder_analytics_views.visitor_id
+            'through'        => Request::class,
+            'key'            => 'analytics_id',      // synder_analytics_requests
+            'throughKey'     => 'id',                // synder_analytics_visitors
+            'secondOtherKey' => 'visitor_id'         // synder_analytics_requests
         ],
     ];
 
@@ -51,6 +51,6 @@ class Page extends Model
         'method',
         'path',
         'views',
-        'unique'
+        'visits'
     ];
 }

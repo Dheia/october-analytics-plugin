@@ -1,5 +1,35 @@
 <div class="report-widget">
     <h3><?= e(trans('synder.analytics::lang.widgets.referrers.title')) ?></h3>
 
-    
+    <div class="control-list">
+        <table class="table data">
+            <thead>
+                <tr>
+                    <th class="active"><span><?= e(trans('synder.analytics::lang.widgets.referrers.tr_hosts')) ?></span></th>
+                    <th><span><?= e(trans('synder.analytics::lang.widgets.referrers.tr_urls')) ?></span></th>
+                    <th><span><?= e(trans('synder.analytics::lang.widgets.referrers.tr_views')) ?></span></th>
+                    <th><span><?= e(trans('synder.analytics::lang.widgets.referrers.tr_last')) ?></span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (!empty($referrers)): ?>
+                    <?php foreach($referrers AS $referrer): ?>
+                        <tr>
+                            <td><?= $referrer['host'] ?></td>
+                            <td><?= $referrer['urls'] ?></td>
+                            <td><?= $referrer['views'] ?></td>
+                            <td><?= $referrer['last_view'] ?></td>
+                        </tr>
+                    <?php endforeach ?>
+                <?php else: ?>
+                    <tr>
+                        <td align="center" colspan="4">
+                            <i class="text-muted"><?= e(trans('synder.analytics::lang.widgets.referrers.table_empty')) ?></i>
+                        </td>
+                    </tr>
+                <?php endif ?>
+            </tbody>
+        </table>
+    </div>
+
 </div>

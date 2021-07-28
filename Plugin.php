@@ -2,12 +2,16 @@
 
 namespace Synder\Analytics;
 
+use Backend;
+use Event;
+use Backend\Classes\NavigationManager;
 use Cms\Classes\CmsController;
 use System\Classes\PluginBase;
 
 use Synder\Analytics\Middleware\AnalyticsMiddleware;
 use Synder\Analytics\Widgets\SimpleReferrers;
 use Synder\Analytics\Widgets\SimpleStatistics;
+
 
 class Plugin extends PluginBase
 {
@@ -18,7 +22,6 @@ class Plugin extends PluginBase
      */
     public $require = [];
     
-
     /**
      * Plugin Details
      *
@@ -53,6 +56,17 @@ class Plugin extends PluginBase
     {
         CmsController::extend(function($controller) {
             $controller->middleware(AnalyticsMiddleware::class);
+        });
+
+        Event::listen('backend.menu.extendItems', function (NavigationManager $manager) {
+            $manager->addSideMenuItem('October.Backend', 'dashboard', 'statistics', [
+                'label'       => 'synder.analytics::lang.backend.title',
+                'icon'        => 'icon-dashboard',
+                'iconSvg'     => 'modules/backend/assets/images/dashboard-icon.svg',
+                'url'         => Backend::url('backend'),
+                'permissions' => ['backend.access_dashboard'],
+                'order'       => 10
+            ]);
         });
     }
 

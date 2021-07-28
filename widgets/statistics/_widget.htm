@@ -5,18 +5,26 @@
         data-control="chart-line"
         data-time-mode="weeks"
         style="height: 200px"
-        data-chart-options="xaxis: {mode: 'time'}">
+        data-chart-options="xaxis: {mode: 'time', minTickSize: [1, 'day'], timeformat: '%Y/%m/%d'}, yaxis: {min: 0, minTickSize: 1, tickDecimals: 0}, legend: { show: true, noColumns: 1, container: '.my-container' }">
         <span
             data-chart="dataset"
-            data-set-color="#008dc9"
-            data-set-data="[1477857082000, 400], [1477943482000, 380], [1478029882000, 340], [1478116282000, 540], [1478202682000, 440], [1478289082000, 360], [1478375482000, 220]"
-            data-set-name="Visits">
+            data-set-color="#86CB43"
+            data-set-data="<?= e($views) ?>"
+            data-set-name="<?= e(trans('synder.analytics::lang.widgets.statistics.views')) ?>">
         </span>
         <span
             data-chart="dataset"
             data-set-color="#008dc9"
-            data-set-data="[1477857082000, 200], [1477943482000, 160], [1478029882000, 120], [1478116282000, 340], [1478202682000, 140], [1478289082000, 260], [1478375482000, 120]"
-            data-set-name="Uniques">
+            data-set-data="<?= e($visits) ?>"
+            data-set-name="<?= e(trans('synder.analytics::lang.widgets.statistics.visits')) ?>">
+        </span>
+        <span
+            data-chart="dataset"
+            data-set-color="#FF2D20"
+            data-set-data="<?= e($visitors) ?>"
+            data-set-name="<?= e(trans('synder.analytics::lang.widgets.statistics.visitors')) ?>">
         </span>
     </div>
+
+    <div class="my-container"></div>
 </div>

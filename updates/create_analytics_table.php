@@ -43,7 +43,7 @@ class CreateAnalyticsTable extends Migration
             $table->timestamp('last_seen');         // Last View
         });
 
-        Schema::create('synder_analytics_views', function (Blueprint $table) {
+        Schema::create('synder_analytics_requests', function (Blueprint $table) {
             $table->engine = 'InnoDB';
 
             $table->bigIncrements('id');
@@ -83,7 +83,7 @@ class CreateAnalyticsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('synder_analytics_referrers');
-        Schema::dropIfExists('synder_analytics_views');
+        Schema::dropIfExists('synder_analytics_requests');
         Schema::dropIfExists('synder_analytics_visitors');
         Schema::dropIfExists('synder_analytics');
     }
