@@ -30,7 +30,6 @@ class AnalyticsMiddleware
         try {
             $this->perform($request, $response);
         } catch(Exception $exception) {
-            dd($exception);
             Log::error($exception->getMessage());
         }
 
