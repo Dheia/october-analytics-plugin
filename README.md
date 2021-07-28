@@ -7,6 +7,10 @@ use JavaScript and can be used "Consent-Free" according to the GDPR (See 'Legal 
 
 **Attention:** Synder.Analytics requires PHP 7.4+!
 
+**Work in Progress:** This plugin already provides a stable but basic functionality, however some 
+features are not yet included as these must be developed during active use. We release it anyway to 
+may receive valuable user feedback, which we can directly include in our active development process.
+
 
 Legal Information
 -----------------
