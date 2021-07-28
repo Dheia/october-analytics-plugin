@@ -34,11 +34,6 @@ This variable contains an array of the following values:
 
 - `synderstats.views` - The 'View' counter of all time
 - `synderstats.visits` - The 'Visit' counter of all time
-- `synderstats.views_30` - The 'View' counter for the past 30 days 
-- `synderstats.visits_30` - The 'Visit' counter for the past 30 days
-- `synderstats.views_since`
-- `synderstats.visits_since`
-
 
 You can access them using twig like shown below:
 
@@ -48,7 +43,8 @@ You can access them using twig like shown below:
 	<!-- Your Post Content -->
 	
 	<div class="post-stats">
-		{{ synderstats.views }}
+		{{ this.page.synderstats.views }}
+		{{ this.page.synderstats.visits }}
 	</div>
 </div>
 ```
