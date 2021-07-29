@@ -1,26 +1,26 @@
-div.chart-legend {
+.synder-widget-analytics-statistics div.chart-legend {
     display: flex;
     text-align: left;
     vertical-align: top;
 }
-div.chart-legend table {
+.synder-widget-analytics-statistics div.chart-legend table {
     color: #35425b;
     margin: 0 auto;
     font-size: 12px;
 }
-div.chart-legend table tr {
+.synder-widget-analytics-statistics div.chart-legend table tr {
     display: inline-block;
     white-space: nowrap;
     margin-right: 20px;
 }
-div.chart-legend table tr td {
+.synder-widget-analytics-statistics div.chart-legend table tr td {
     padding: 15px 0 7px 0;
     vertical-align: top;
 }
-div.chart-legend table tr td.indicator {
+.synder-widget-analytics-statistics div.chart-legend table tr td.indicator {
     width: 20px;
 }
-div.chart-legend table tr td.indicator i {
+.synder-widget-analytics-statistics div.chart-legend table tr td.indicator i {
     top: 2px;
     width: 13px;
     height: 13px;

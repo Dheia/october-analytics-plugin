@@ -8,6 +8,16 @@ use Synder\Analytics\Models\Visitor;
 class SimpleSystems extends ReportWidgetBase
 {
     /**
+     * Add Widget Assets
+     * 
+     * @return void
+     */
+    protected function loadAssets()
+    {
+        $this->addCss('../../assets/systems.css');
+    }
+
+    /**
      * Render Widget
      *
      * @return mixed

@@ -59,6 +59,7 @@ class SimpleStatistics extends ReportWidgetBase
                 $firsttime = strtotime(date('Y-m-d'));
             }
 
+            $firsttime = $firsttime - 24*60*60;
             for ($i = 7 - count($views); $i > 0; $i--) {
                 $firsttime = $firsttime - 24*60*60;
 

@@ -7,3 +7,7 @@
     - Fix empty centered counter on browser / os usage charts.
     - Fix missing browser or os agent items.
     - Skip Favicon.ico logs.
+1.0.2:
+    - Small Bugfixes.
+    - Fix chart-legend height on Browser / OS widget.
+    - Fix duplicated ticks on Basic Statistics widget.

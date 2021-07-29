@@ -1,13 +1,13 @@
-<div class="report-widget">
+<div class="report-widget synder-widget-analytics-systems">
     <h3><?= e(trans('synder.analytics::lang.widgets.systems.title')) ?></h3>
 
     <div class="control-list">
         <div class="row">
-            <div class="col-xs-12 col-md-6" style="height: 220px;">
+            <div class="col-xs-12 col-md-6">
                 <div
                     class="control-chart centered wrap-legend"
                     data-control="chart-pie"
-                    data-size="200"
+                    data-size="180"
                     data-center-text="<?= e($counters[0]) ?>">
                     <ul>
                         <?php if (count($browserlist) > 0): ?>
@@ -21,11 +21,11 @@
                 </div>
             </div>
 
-            <div class="col-xs-12 col-md-6" style="height: 220px;">
+            <div class="col-xs-12 col-md-6">
                 <div
                     class="control-chart centered wrap-legend"
                     data-control="chart-pie"
-                    data-size="200"
+                    data-size="180"
                     data-center-text="<?= e($counters[1]) ?>">
                     <ul>
                         <?php if (count($oslist) > 0): ?>
