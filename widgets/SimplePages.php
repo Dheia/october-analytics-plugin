@@ -20,6 +20,8 @@ class SimplePages extends ReportWidgetBase
         $pages = Page::selectRaw('method, path, views, visits, updated_at AS last_viewed')
             ->where('created_at', '>=', $date)
             ->orderByDesc('visits')
+            ->orderByDesc('views')
+            ->orderByDesc('updated_at')
             ->limit(5)
             ->get()
             ->toArray();
