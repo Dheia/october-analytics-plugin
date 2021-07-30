@@ -4,7 +4,13 @@ tabs:
   fields:
 
     # General Settings
-    section_general:
+    filter_backend_users:
+      tab: synder.analytics::lang.config._tabs.general
+      type: switch
+      label: synder.analytics::lang.config.filter_backend_users
+      comment: synder.analytics::lang.config.filter_backend_users_desc
+
+    section_datetime:
       tab: synder.analytics::lang.config._tabs.general
       type: section
       label: synder.analytics::lang.config.section_datetime
@@ -25,7 +31,7 @@ tabs:
       showSearch: false
       span: row
       spanClass: col-xs-12 col-md-4
-    
+
     dateformat:
       tab: synder.analytics::lang.config._tabs.general
       type: dropdown
@@ -40,7 +46,7 @@ tabs:
       showSearch: false
       span: row
       spanClass: col-xs-12 col-md-4
-    
+
     customformat:
       tab: synder.analytics::lang.config._tabs.general
       type: text
@@ -49,24 +55,31 @@ tabs:
       commentHtml: true
       span: row
       spanClass: col-xs-12 col-md-4
-    
+
     # Bots Settings
+    bot_lazy:
+      tab: synder.analytics::lang.config._tabs.bots
+      type: switch
+      label: synder.analytics::lang.config.bot_lazy
+      comment: synder.analytics::lang.config.bot_lazy_desc
+      commentHtml: true
+
     bot_filter:
       tab: synder.analytics::lang.config._tabs.bots
       type: synder-slider
-      label: synder.analytics::lang.config.filterbots
-      comment: synder.analytics::lang.config.filterbots_desc
+      label: synder.analytics::lang.config.bot_filter
+      comment: synder.analytics::lang.config.bot_filter_desc
       min: 0.1
       max: 5.0
       step: 0.1
       default: 4.2
       selectableMin: 0.5
-    
+
     section_bot_robots:
       tab: synder.analytics::lang.config._tabs.bots
       type: section
       label: synder.analytics::lang.config.section_bot_robots
-    
+
     hint_bot_robots:
       tab: synder.analytics::lang.config._tabs.bots
       type: hint
@@ -82,7 +95,7 @@ tabs:
       default: off
       span: row
       spanClass: col-xs-12 col-md-6
-    
+
     bot_robots_relocate:
       tab: synder.analytics::lang.config._tabs.bots
       type: switch
@@ -96,19 +109,19 @@ tabs:
       tab: synder.analytics::lang.config._tabs.bots
       type: partial
       path: $/synder/analytics/models/settings/honeypot.htm
-    
+
     section_bot_inlink:
       tab: synder.analytics::lang.config._tabs.bots
       type: section
       label: synder.analytics::lang.config.section_bot_inlink
-    
+
     hint_bot_inlink:
       tab: synder.analytics::lang.config._tabs.bots
       type: hint
       mode: tip
       label: synder.analytics::lang.config.hint_bot_inlink_label
       comment: synder.analytics::lang.config.hint_bot_inlink_comment
-    
+
     bot_inlink:
       tab: synder.analytics::lang.config._tabs.bots
       type: switch
@@ -117,7 +130,7 @@ tabs:
       default: off
       span: row
       spanClass: col-xs-12 col-md-6
-    
+
     bot_inlink_relocate:
       tab: synder.analytics::lang.config._tabs.bots
       type: switch
@@ -126,8 +139,40 @@ tabs:
       default: off
       span: row
       spanClass: col-xs-12 col-md-6
-    
+
     bot_inlink_test:
       tab: synder.analytics::lang.config._tabs.bots
       type: partial
       path: $/synder/analytics/models/settings/honeypot.htm
+
+    hint_event_manager:
+      tab: synder.analytics::lang.config._tabs.events
+      type: hint
+      mode: tip
+      label: synder.analytics::lang.config._plus.events_label
+      comment: synder.analytics::lang.config._plus.events_comment
+      commentHtml: true
+
+    hint_event_manager_wip:
+      tab: synder.analytics::lang.config._tabs.events
+      type: hint
+      mode: warning
+      label: synder.analytics::lang.config._plus.wip_label
+      comment: synder.analytics::lang.config._plus.wip_comment
+      commentHtml: true
+
+    hint_tracking_system:
+      tab: synder.analytics::lang.config._tabs.tracking
+      type: hint
+      mode: tip
+      label: synder.analytics::lang.config._plus.tracking_label
+      comment: synder.analytics::lang.config._plus.tracking_comment
+      commentHtml: true
+
+    hint_tracking_system_wip:
+      tab: synder.analytics::lang.config._tabs.tracking
+      type: hint
+      mode: warning
+      label: synder.analytics::lang.config._plus.wip_label
+      comment: synder.analytics::lang.config._plus.wip_comment
+      commentHtml: true
