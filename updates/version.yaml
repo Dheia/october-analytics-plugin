@@ -1,14 +1,19 @@
 1.0.0:
-    - First Version.
+    - Version 1.0.0 - Initial Release
     - create_analytics_table.php
 1.0.1:
-    - Small Bugfixes.
-    - Fix empty user agent array.
-    - Fix empty centered counter on browser / os usage charts.
-    - Fix missing browser or os agent items.
-    - Skip Favicon.ico logs.
+    - 'Version 1.0.1 - Bugfixes (Check CHANGELOG.md for details)'
+    - 'Update: Skip logs for favicon.ico file.'
+    - 'Update: Add centered counter number on os/browser charts.'
+    - 'Bugfix: Error / Exception due to empty user agent.'
+    - 'Bugfix: Error / Exception due to missing browser and us agent details.'
+    - 'Bugfix: Small details and errors has been fixed.'
 1.0.2:
-    - Small Bugfixes.
-    - Fix chart-legend height on Browser / OS widget.
-    - Fix duplicated ticks on Basic Statistics widget.
-    - Update Query on Top Pages widget.
+    - 'Version 1.0.2 - Bugfixes (Check CHANGELOG.md for details)'
+    - 'Update: The query used for the chart on the Top-Pages widget.'
+    - 'Bugfix: Forced height on the chart-legend of the browser / os widget.'
+    - 'Bugfix: Duplicated tick for the first counted date on basic statistics widget.'
+    - 'Bugfix: Small details and errors has been fixed.'
+#1.1.0:
+#    - 'Version 1.1.0 - New Features (Check CHANGELOG.md for details)'
+#    - update_tables_version_110.php

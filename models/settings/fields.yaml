@@ -1,0 +1,133 @@
+tabs:
+  stretch: true
+  defaultTab: synder.analytics::lang.config._tabs.general
+  fields:
+
+    # General Settings
+    section_general:
+      tab: synder.analytics::lang.config._tabs.general
+      type: section
+      label: synder.analytics::lang.config.section_datetime
+
+    weekstart:
+      tab: synder.analytics::lang.config._tabs.general
+      type: dropdown
+      label: synder.analytics::lang.config.weekstart
+      default: sunday
+      options:
+        sunday: synder.analytics::lang.config.weekdays.sunday
+        monday: synder.analytics::lang.config.weekdays.monday
+        tuesday: synder.analytics::lang.config.weekdays.tuesday
+        wednesday: synder.analytics::lang.config.weekdays.wednesday
+        thursday: synder.analytics::lang.config.weekdays.thursday
+        friday: synder.analytics::lang.config.weekdays.friday
+        saturday: synder.analytics::lang.config.weekdays.saturday
+      showSearch: false
+      span: row
+      spanClass: col-xs-12 col-md-4
+    
+    dateformat:
+      tab: synder.analytics::lang.config._tabs.general
+      type: dropdown
+      label: synder.analytics::lang.config.dateformat
+      default: plain
+      options:
+        plain: synder.analytics::lang.config.dateformats.plain
+        big: synder.analytics::lang.config.dateformats.big
+        middle: synder.analytics::lang.config.dateformats.middle
+        little: synder.analytics::lang.config.dateformats.little
+        custom: synder.analytics::lang.config.dateformats.custom
+      showSearch: false
+      span: row
+      spanClass: col-xs-12 col-md-4
+    
+    customformat:
+      tab: synder.analytics::lang.config._tabs.general
+      type: text
+      label: synder.analytics::lang.config.customformat
+      comment: synder.analytics::lang.config.customformat_desc
+      commentHtml: true
+      span: row
+      spanClass: col-xs-12 col-md-4
+    
+    # Bots Settings
+    bot_filter:
+      tab: synder.analytics::lang.config._tabs.bots
+      type: synder-slider
+      label: synder.analytics::lang.config.filterbots
+      comment: synder.analytics::lang.config.filterbots_desc
+      min: 0.1
+      max: 5.0
+      step: 0.1
+      default: 4.2
+      selectableMin: 0.5
+    
+    section_bot_robots:
+      tab: synder.analytics::lang.config._tabs.bots
+      type: section
+      label: synder.analytics::lang.config.section_bot_robots
+    
+    hint_bot_robots:
+      tab: synder.analytics::lang.config._tabs.bots
+      type: hint
+      mode: tip
+      label: synder.analytics::lang.config.hint_bot_robots_label
+      comment: synder.analytics::lang.config.hint_bot_robots_comment
+
+    bot_robots:
+      tab: synder.analytics::lang.config._tabs.bots
+      type: switch
+      label: synder.analytics::lang.config.bot_robots
+      comment: synder.analytics::lang.config.bot_robots_desc
+      default: off
+      span: row
+      spanClass: col-xs-12 col-md-6
+    
+    bot_robots_relocate:
+      tab: synder.analytics::lang.config._tabs.bots
+      type: switch
+      label: synder.analytics::lang.config.bot_robots_relocate
+      comment: synder.analytics::lang.config.bot_robots_relocate_desc
+      default: off
+      span: row
+      spanClass: col-xs-12 col-md-6
+
+    bot_robots_test:
+      tab: synder.analytics::lang.config._tabs.bots
+      type: partial
+      path: $/synder/analytics/models/settings/honeypot.htm
+    
+    section_bot_inlink:
+      tab: synder.analytics::lang.config._tabs.bots
+      type: section
+      label: synder.analytics::lang.config.section_bot_inlink
+    
+    hint_bot_inlink:
+      tab: synder.analytics::lang.config._tabs.bots
+      type: hint
+      mode: tip
+      label: synder.analytics::lang.config.hint_bot_inlink_label
+      comment: synder.analytics::lang.config.hint_bot_inlink_comment
+    
+    bot_inlink:
+      tab: synder.analytics::lang.config._tabs.bots
+      type: switch
+      label: synder.analytics::lang.config.bot_inlink
+      comment: synder.analytics::lang.config.bot_inlink_desc
+      default: off
+      span: row
+      spanClass: col-xs-12 col-md-6
+    
+    bot_inlink_relocate:
+      tab: synder.analytics::lang.config._tabs.bots
+      type: switch
+      label: synder.analytics::lang.config.bot_inlink_relocate
+      comment: synder.analytics::lang.config.bot_inlink_relocate_desc
+      default: off
+      span: row
+      spanClass: col-xs-12 col-md-6
+    
+    bot_inlink_test:
+      tab: synder.analytics::lang.config._tabs.bots
+      type: partial
+      path: $/synder/analytics/models/settings/honeypot.htm

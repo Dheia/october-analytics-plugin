@@ -10,6 +10,32 @@ use Synder\Analytics\Models\Page;
 class SimplePages extends ReportWidgetBase
 {
     /**
+     * Register Widget Settings
+     *
+     * @return void
+     */
+    public function defineProperties()
+    {
+        return [
+            'timeperiod' => [
+                'title' => 'synder.analytics::lang.widgets.pages.config.timeperiod',
+                'type' => 'dropdown',
+                'default' => 'all',
+                'options' => [
+                    'all' => trans('synder.analytics::lang.shared.time_all'),
+                    '7days' => trans('synder.analytics::lang.shared.time_7days'),
+                    '14days' => trans('synder.analytics::lang.shared.time_14days'),
+                    '31days' => trans('synder.analytics::lang.shared.time_31days'),
+                    'week' => trans('synder.analytics::lang.shared.time_week'),
+                    'month' => trans('synder.analytics::lang.shared.time_month')
+                ],
+                'showSearch' => false
+            ]
+        ];
+    }
+
+
+    /**
      * Render Widget
      *
      * @return mixed

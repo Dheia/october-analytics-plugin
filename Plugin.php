@@ -7,10 +7,12 @@ use Event;
 use Backend\Classes\NavigationManager;
 use Cms\Classes\CmsController;
 use Cms\Classes\Page as RequestPage;
+use Synder\Analytics\FormWidgets\Slider;
 use System\Classes\PluginBase;
 
-use Synder\Analytics\Models\Page;
 use Synder\Analytics\Middleware\AnalyticsMiddleware;
+use Synder\Analytics\Models\Page;
+use Synder\Analytics\Models\Settings;
 use Synder\Analytics\Widgets\SimplePages;
 use Synder\Analytics\Widgets\SimpleReferrers;
 use Synder\Analytics\Widgets\SimpleStatistics;
@@ -105,6 +107,38 @@ class Plugin extends PluginBase
 
             $model->addDynamicProperty('synderstats', $stats);
         });
+    }
+
+    /**
+     * Register Form Widgets
+     *
+     * @return void
+     */
+    public function registerFormWidgets()
+    {
+        return [
+            Slider::class => 'synder-slider'
+        ];
+    }
+    
+    /**
+     * Register Plugin Settings
+     *
+     * @return array
+     */
+    public function registerSettings()
+    {
+        return [
+            'settings' => [
+                'label'       => 'synder.analytics::lang.config._label',
+                'description' => 'synder.analytics::lang.config._description',
+                'category'    => 'system::lang.system.categories.misc',
+                'icon'        => 'icon-bar-chart',
+                'class'       => Settings::class,
+                'order'       => 500,
+                'keywords'    => 'analytics statistics traffic synder'
+            ]
+        ];
     }
 
     /**
