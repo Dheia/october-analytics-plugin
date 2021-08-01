@@ -17,11 +17,11 @@ class UpdateTablesVersion110 extends Migration
      */
     public function up()
     {
-        Schema::create('synder_analytics', function (Blueprint $table) {
+        Schema::table('synder_analytics', function (Blueprint $table) {
             $table->boolean('hide')->default(false)->after('path');
         });
         
-        Schema::create('synder_analytics_visitors', function (Blueprint $table) {
+        Schema::table('synder_analytics_visitors', function (Blueprint $table) {
             $table->string('os', 255)->nullable()->after('agent');
             $table->string('browser', 255)->nullable()->after('agent');
         });
@@ -34,6 +34,13 @@ class UpdateTablesVersion110 extends Migration
      */
     public function down()
     {
-        // Nothing to do here...
+        Schema::table('synder_analytics', function (Blueprint $table) {
+            $table->dropColumn('hide');
+        });
+
+        Schema::table('synder_analytics_visitors', function (Blueprint $table) {
+            $table->dropColumn('browser');
+            $table->dropColumn('os');
+        });
     }
 }
