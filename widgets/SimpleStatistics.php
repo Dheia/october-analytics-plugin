@@ -3,16 +3,51 @@
 namespace Synder\Analytics\Widgets;
 
 use Backend\Classes\ReportWidgetBase;
+
+use Synder\Analytics\Classes\DateTime;
 use Synder\Analytics\Models\Request;
+
 
 class SimpleStatistics extends ReportWidgetBase
 {
     /**
-     * @inheritDoc
+     * Register Widget Settings
+     *
+     * @return void
      */
-    public function __construct($controller, $properties = [])
+    public function defineProperties()
     {
-        parent::__construct($controller, $properties);
+        return [
+            'show_counts' => [
+                'title' => 'synder.analytics::lang.widgets.statistics.show_counts',
+                'type' => 'checkbox',
+                'default' => 'false'
+            ],
+            'color_view' => [
+                'title' => 'synder.analytics::lang.widgets.statistics.color_views',
+                'type' => 'string',
+                'default' => '#86CB43',
+                'placeholder' => '#000000',
+                'validationPattern' => '^\#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$',
+                'validationMessage' => 'synder.analytics::lang.widgets.statistics.color_error'
+            ],
+            'color_visit' => [
+                'title' => 'synder.analytics::lang.widgets.statistics.color_visits',
+                'type' => 'string',
+                'default' => '#008dc9',
+                'placeholder' => '#000000',
+                'validationPattern' => '^\#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$',
+                'validationMessage' => 'synder.analytics::lang.widgets.statistics.color_error'
+            ],
+            'color_visitor' => [
+                'title' => 'synder.analytics::lang.widgets.statistics.color_visitors',
+                'type' => 'string',
+                'default' => '#FF2D20',
+                'placeholder' => '#000000',
+                'validationPattern' => '^\#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$',
+                'validationMessage' => 'synder.analytics::lang.widgets.statistics.color_error'
+            ]
+        ];
     }
 
     /**
@@ -22,7 +57,36 @@ class SimpleStatistics extends ReportWidgetBase
      */
     protected function loadAssets()
     {
-        $this->addCss('../../assets/statistics.css');
+        $this->addCss('../../assets/css/statistics.css');
+        $this->addJs('../../assets/js/statistics.js');
+    }
+
+    /**
+     * Prepare Chart Options
+     * 
+     * @return string
+     */
+    public function prepareChartOptions($data)
+    {
+        $config = [];
+        $config[] = "xaxis: {mode: 'time', minTickSize: [1, 'day'], timeformat: '%Y/%m/%d'}";
+        $config[] = "yaxis: {min: 0, minTickSize: 1, tickDecimals: 0}";
+        $config[] = "legend: { show: false }";
+
+        if ($this->property('show_counts') === 1) {
+            $this->vars['counts'] = [
+                'views' => [array_sum(array_column($data, 'views')), current($data)['views']],
+                'visits' => [array_sum(array_column($data, 'visits')), current($data)['visits']],
+                'visitors' => [array_sum(array_column($data, 'visitors')), current($data)['visitors']]
+            ];
+        }
+
+        $this->vars['config'] = implode(', ', $config);
+        $this->vars['colors'] = [
+            'view' => $this->property('color_view', '#86CB43'),
+            'visit' => $this->property('color_visit', '#008dc9'),
+            'visitor' => $this->property('color_visitor', '#FF2D20')
+        ];
     }
 
     /**
@@ -32,47 +96,46 @@ class SimpleStatistics extends ReportWidgetBase
      */
     public function render()
     {
-        $views = [];
-        $visits = [];
-        $visitors = [];
-        $firsttime = 0;
         $stats = Request::selectRaw('SUM(views) as views, COUNT(id) as visits, COUNT(DISTINCT(visitor_id)) as visitors, DATE(created_at) AS date')
             ->groupByRaw('DATE(created_at)')
             ->orderByRaw('DATE(created_at) DESC')
             ->limit(7)
             ->get()
-            ->map(function ($item, $key) use (&$firsttime, &$views, &$visits, &$visitors) {
-                $item['timestamp'] = strtotime($item['date'] . ' 00:00:00');
-                if ($firsttime === 0) {
-                    $firsttime = $item['timestamp'];
-                }
-
-                array_unshift($views, '[' . ($item['timestamp']*1000) . ', ' . $item['views'] . ']');
-                array_unshift($visits, '[' . ($item['timestamp']*1000) . ', ' . $item['visits'] . ']');
-                array_unshift($visitors, '[' . ($item['timestamp']*1000) . ', ' . $item['visitors'] . ']');
-                return $item;
-            })
+            ->mapWithKeys(fn ($item, $key) => [$item['date'] => $item])
             ->toArray();
         
-        if (count($views) < 7 || count($visits) < 7) {
-            if ($firsttime === 0) {
-                $firsttime = strtotime(date('Y-m-d'));
+        // Prepare Array
+        $result = [];
+        $views = [];
+        $visits = [];
+        $visitors = [];
+
+        $datetime = new DateTime();
+        foreach ($datetime->each('-P1D', 7, 'Y-m-d') AS $key) {
+            if (array_key_exists($key, $stats)) {
+                $item = $stats[$key];
+            } else {
+                $item = [
+                    'views' => 0,
+                    'visits' => 0,
+                    'visitors' => 0,
+                    'date' => $key
+                ];
             }
 
-            $firsttime = $firsttime - 24*60*60;
-            for ($i = 7 - count($views); $i > 0; $i--) {
-                $firsttime = $firsttime - 24*60*60;
-
-                array_unshift($views, '[' . ($firsttime*1000) . ', 0]');
-                array_unshift($visits, '[' . ($firsttime*1000) . ', 0]');
-                array_unshift($visitors, '[' . ($firsttime*1000) . ', 0]');
-            }
-        } 
+            $timestamp = strtotime($key . ' 00:00:00');
+            $result[$key] = $item;
+            $views[] = '[' . ($timestamp * 1000) . ', ' . $item['views'] . ']';
+            $visits[] = '[' . ($timestamp * 1000) . ', ' . $item['visits'] . ']';
+            $visitors[] = '[' . ($timestamp * 1000) . ', ' . $item['visitors'] . ']';
+        }
         
-        $this->vars['stats'] = $stats ?? [];
-        $this->vars['views'] = implode(', ', $views);
-        $this->vars['visits'] = implode(', ', $visits);
-        $this->vars['visitors'] = implode(', ', $visitors);
+        // Set and Render
+        $this->prepareChartOptions($result);
+        $this->vars['stats'] = array_reverse($result) ?? [];
+        $this->vars['views'] = implode(', ', array_reverse($views));
+        $this->vars['visits'] = implode(', ', array_reverse($visits));
+        $this->vars['visitors'] = implode(', ', array_reverse($visitors));
         return $this->makePartial('$/synder/analytics/widgets/statistics/_widget.htm');
     }
 }

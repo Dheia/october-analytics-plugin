@@ -14,6 +14,6 @@
     - 'Bugfix: Forced height on the chart-legend of the browser / os widget.'
     - 'Bugfix: Duplicated tick for the first counted date on basic statistics widget.'
     - 'Bugfix: Small details and errors has been fixed.'
-#1.1.0:
-#    - 'Version 1.1.0 - New Features (Check CHANGELOG.md for details)'
-#    - update_tables_version_110.php
+1.1.0:
+    - 'Version 1.1.0 - New Features (Check CHANGELOG.md for details)'
+    - update_tables_version_110.php

@@ -4,11 +4,22 @@ Changelog
 Version 1.1.0
 -------------
 -   Add: New settings page to configure the Synder Simple Analytics plugin.
--   Add: New Bot probability feature to filter requests made by non-humans.
 -   Add: New chart configuration properties (accessible on the widget itself).
+-   Add: New Bot probability feature to filter requests made by non-humans.
 -   Add: New 'synder-slider' formwidget, used to configure Bot probability filter.
--   Update: New 'hide' column on `synder_analytics` to hide pages and those requests.
--   Update: New 'browser' and 'os' columns on `synder_analytics_visitors` to skip evaluation on each (re-) load.
+-   Add: New 'hide' column on `synder_analytics` to hide pages and those requests.
+-   Add: New 'browser' and 'os' columns on `synder_analytics_visitors` to skip evaluation on each (re-) load.
+-   Add: Global option to filter backend users.
+-   Add: Global option to format the date/time output format.
+-   Add: Allow to toggle each single line on the basic statistics widget.
+-   Add: Option to change the single line colors on the basic statistics widget.
+-   Add: Option to toggle the today / days numeric counter on the basic statistics widget.
+-   Add: Option to toggle the chart legend on the system / os widget.
+-   Add: Option to define the timeperiod on top-referrers and top-pages widgets.
+-   Add: Option to define the amount of shown items on top-referrers and top-pages widgets.
+-   Update: Don't skip favicon.ico, rather hide favicon.ico and robots.txt requests per default.
+-   Bugfix: Duplicated tick for the first counted date on basic statistics widget.
+-   Bugfix: Missing Date-Tick on basic statistics widget.
 
 Version 1.0.2
 -------------

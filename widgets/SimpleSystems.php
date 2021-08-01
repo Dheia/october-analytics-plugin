@@ -8,13 +8,39 @@ use Synder\Analytics\Models\Visitor;
 class SimpleSystems extends ReportWidgetBase
 {
     /**
+     * Register Widget Settings
+     *
+     * @return void
+     */
+    public function defineProperties()
+    {
+        return [
+            'show_legend' => [
+                'title' => 'synder.analytics::lang.widgets.systems.show_legend',
+                'type' => 'checkbox',
+                'default' => 'true'
+            ]
+        ];
+    }
+
+    /**
      * Add Widget Assets
      * 
      * @return void
      */
     protected function loadAssets()
     {
-        $this->addCss('../../assets/systems.css');
+        $this->addCss('../../assets/css/systems.css');
+    }
+
+    /**
+     * Prepare Chart Options
+     * 
+     * @return string
+     */
+    public function prepareChartOptions($data)
+    {
+        $this->vars['hide_legend'] = $this->property('show_legend') === 0;
     }
 
     /**
@@ -55,6 +81,7 @@ class SimpleSystems extends ReportWidgetBase
             }
         }
 
+        $this->prepareChartOptions($data);
         return $this->makePartial('$/synder/analytics/widgets/systems/_widget.htm');
     }
 }

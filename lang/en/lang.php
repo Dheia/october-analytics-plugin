@@ -21,7 +21,20 @@ return [
             'title' => 'Synder Statistics - General',
             'views' => 'Views',
             'visits' => 'Visits',
-            'visitors' => 'Visitors'
+            'visitors' => 'Visitors',
+            'count_value' => 'Today / 7 Days',
+            'toggle' => 'Click to toggle',
+            'show_counts' => 'Show Counts',
+            'color_views' => 'Views Color',
+            'color_visits' => 'Visits Color',
+            'color_visitors' => 'Visitors Color',
+            'color_error' => 'Please enter a valid HEX color value (ex.: #008dc9).'
+        ],
+        'systems' => [
+            'label' => 'Simple Statistics - Browser / OS Usage',
+            'title' => 'Synder Statistics - Browser / OS Usage',
+            'empty' => 'No data available yet.',
+            'show_legend' => 'Show Legend'
         ],
         'referrers' => [
             'label' => 'Simple Statistics - Top Referrers',
@@ -30,12 +43,10 @@ return [
             'tr_urls' => 'Related URLs',
             'tr_views' => 'Views',
             'tr_last' => 'Last Visit',
-            'table_empty' => 'No referrers available yet.'
-        ],
-        'systems' => [
-            'label' => 'Simple Statistics - Browser / OS Usage',
-            'title' => 'Synder Statistics - Browser / OS Usage',
-            'empty' => 'No data available yet.'
+            'table_empty' => 'No referrers available yet.',
+            'timeperiod' => 'Time Period',
+            'amount' => 'Number of Items',
+            'amount_error' => 'Please enter numbers only'
         ],
         'pages' => [
             'label' => 'Simple Statistics - Top Pages',
@@ -45,11 +56,9 @@ return [
             'tr_visits' => 'Visits',
             'tr_last' => 'Last Visit',
             'table_empty' => 'No data available yet.',
-
-            'config' => [
-                'timeperiod' => 'Time Period',
-                'formatdates' => 'Format Dates'
-            ]
+            'timeperiod' => 'Time Period',
+            'amount' => 'Number of Items',
+            'amount_error' => 'Please enter numbers only'
         ]
     ],
 

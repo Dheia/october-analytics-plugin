@@ -9,6 +9,7 @@ tabs:
       type: switch
       label: synder.analytics::lang.config.filter_backend_users
       comment: synder.analytics::lang.config.filter_backend_users_desc
+      default: 1
 
     section_datetime:
       tab: synder.analytics::lang.config._tabs.general
@@ -19,15 +20,15 @@ tabs:
       tab: synder.analytics::lang.config._tabs.general
       type: dropdown
       label: synder.analytics::lang.config.weekstart
-      default: sunday
+      default: 0
       options:
-        sunday: synder.analytics::lang.config.weekdays.sunday
-        monday: synder.analytics::lang.config.weekdays.monday
-        tuesday: synder.analytics::lang.config.weekdays.tuesday
-        wednesday: synder.analytics::lang.config.weekdays.wednesday
-        thursday: synder.analytics::lang.config.weekdays.thursday
-        friday: synder.analytics::lang.config.weekdays.friday
-        saturday: synder.analytics::lang.config.weekdays.saturday
+        0: synder.analytics::lang.config.weekdays.sunday
+        1: synder.analytics::lang.config.weekdays.monday
+        2: synder.analytics::lang.config.weekdays.tuesday
+        3: synder.analytics::lang.config.weekdays.wednesday
+        4: synder.analytics::lang.config.weekdays.thursday
+        5: synder.analytics::lang.config.weekdays.friday
+        6: synder.analytics::lang.config.weekdays.saturday
       showSearch: false
       span: row
       spanClass: col-xs-12 col-md-4

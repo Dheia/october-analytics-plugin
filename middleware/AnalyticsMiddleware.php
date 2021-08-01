@@ -8,9 +8,12 @@ use Exception;
 use Log;
 use DeviceDetector\DeviceDetector;
 use Illuminate\Http\Request as HttpRequest;
+use Illuminate\Support\Str;
+
 use Synder\Analytics\Models\Page;
 use Synder\Analytics\Models\Referrer;
 use Synder\Analytics\Models\Request;
+use Synder\Analytics\Models\Settings;
 use Synder\Analytics\Models\Visitor;
 
 
@@ -146,9 +149,10 @@ class AnalyticsMiddleware
             return false;
         }
 
-        // Skip Favicon
-        if (strpos($handle, 'favicon.ico') !== false) {
-            return false;
+        // Hide URL 
+        $hide = false;
+        if (Str::endsWith($handle, 'favicon.ico') || Str::endsWith($handle, 'robots.txt')) {
+            $hide = true;
         }
 
         // Return Page
@@ -157,6 +161,7 @@ class AnalyticsMiddleware
         ], [
             'method'    => $method,
             'path'      => $handle,
+            'hide'      => $hide,
             'views'     => 0,
             'visits'    => 0
         ]);
@@ -173,7 +178,7 @@ class AnalyticsMiddleware
     public function getUser(HttpRequest $request, $response)
     {
         // Skip logged in backend users
-        if (BackendAuth::check()) {
+        if (Settings::get('filter_backend_users') && BackendAuth::check()) {
             return false;
         }
 
