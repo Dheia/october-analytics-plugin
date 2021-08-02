@@ -2,14 +2,10 @@ Simple Analytics for OctoberCMS
 ===============================
 
 Simple analyse the traffic of your website without relying on an external service. The simple
-version of this plugin (look at 'Advanced Analytics for OctoberCMS' for more information) does not
-use JavaScript and can be used "Consent-Free" according to the GDPR (See 'Legal Information' below).
+version of this plugin (see 'Advanced Analytics for OctoberCMS' for more details) does not use 
+JavaScript and can be used "Consent-Free" according to the GDPR (See 'Legal Information' below).
 
 **Attention:** Synder.Analytics requires PHP 7.4+!
-
-**Work in Progress:** This plugin already provides a stable but basic functionality, however some
-features are not yet included as these must be developed during active use. We release it anyway to
-may receive valuable user feedback, which we can directly include in our active development process.
 
 
 Features
@@ -17,17 +13,14 @@ Features
 
 Simple Analytics does not include any JavaScript on your website, all information are collected on
 the server-side. While this should actually provide enough data, it is of course not always as
-precise as with JavaScript-based solutions.
+precise as with JavaScript-based support.
 
 -   Simple URL and Visit / View counters
-    -   ... also usable on your frontend website
--   Simple but limited trace/route -tracking
+    -   ... also usable as Twig variables / filters on your frontend website
 -   Simple but limited Bot-Detection (Humanity testing)
 -   Simple but limited Referrer collection
 -   Simple but limited Browser and OS detection (JavaScript-less)
 -   A bunch of neat statistics within 4 **configurable** dashboard widgets
--   An own admin page with extended access to the data collections
-    -   ... with an Response-Code tracker to find 400 error pages
 
 
 ### Bot-Detection
@@ -41,8 +34,17 @@ and is based on the following values (*-marked values must be configured before)
 -   \* robots.txt
 -   \* invisible link
 
-The Advanced Analytics plugin (below) contains additional, Cookie and JavaScript-based, solutions.
-You can find more details about each single value and technique in the documentation.
+The Advanced Analytics plugin contains additional, Cookie and JavaScript-based, solutions. You can 
+find more details about each single value and technique in the documentation.
+
+
+### Coming Soon
+
+The following features may be part of a future release.
+
+-   Simple but limited trace/route -tracking
+-   An own admin page with extended access to the data collections
+    -   ... with an Response-Code tracker to find 400 error pages
 
 
 Advanced Analytics for OctoberCMS
@@ -68,20 +70,33 @@ Requirements
 -   [matomo/device-detector](https://github.com/matomo-org/device-detector) 4.3+
 
 
+### Compatible With
+
+The robots.txt honeypot can be used without additional dependencies, but if one of the following 
+plugins is found, those functionality will be used instead. 
+
+-   [Arcane.SEO](https://octobercms.com/plugin/arcane-seo)
+-   [Mohsin.TXT](https://octobercms.com/plugin/mohsin-txt)
+-   [Zen.Robots](https://octobercms.com/plugin/zen-robots)
+
+
 Legal Information
 -----------------
 
-The Simple Version of this plugin is designed to be used consent-free, since it does NOT use
-cookies or store any personal or similar related data in a way that can be traced back to the user.
-The user tracking is based on a database-stored hashed value, consisting of the users IP address,
-the user agent as well as the application key of your OctoberCMS website. Of course, this reduces
-the evaluability of the individual view trace - especially across browsers and devices - but as the
-name suggests, this is just a simple analytics system and not Google Analytics or Matomo.
+The Simple version of this plugin is designed to be used consent-free, since it does NOT use cookies 
+or store personal (or similar related) data in a way that permits traceability. The user tracking 
+is based on a daily-changing database-stored hashed value, consisting of the IP address, the user 
+agent, the current date as well as the application key of your OctoberCMS website. We're using PHP's
+`hash_hmac` function, used with SHA1 as algorithm and the OctoberCMS application key as key.
+
+Of course, this method also affects the quality and reduces the evaluability of the collected data 
+and makes it impossible to track a single user across days, browsers or devices. Nevertheless, you 
+will get enough usable data without having to obtain the visitor's consent in advance.
 
 **Attention:** This plugin is designed to comply with the GDPR (European General Data Protection
 Regulation), however, from a legal point of view **we cannot give any guarantees**. The use of this
 plugin is therefore at your own risk, contact us at october@synder.dev if you need some information
-of how this plugin works / collects data.
+or explicit details of how this plugin works.
 
 
 Copyright & License

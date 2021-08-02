@@ -95,7 +95,7 @@ tabs:
       comment: synder.analytics::lang.config.bot_robots_desc
       default: off
       span: row
-      spanClass: col-xs-12 col-md-6
+      spanClass: col-xs-12 col-md-4
 
     bot_robots_relocate:
       tab: synder.analytics::lang.config._tabs.bots
@@ -104,12 +104,23 @@ tabs:
       comment: synder.analytics::lang.config.bot_robots_relocate_desc
       default: off
       span: row
-      spanClass: col-xs-12 col-md-6
+      spanClass: col-xs-12 col-md-4
+
+    bot_robots_relocate_cron:
+      tab: synder.analytics::lang.config._tabs.bots
+      type: switch
+      label: synder.analytics::lang.config.bot_robots_relocate_cron
+      comment: synder.analytics::lang.config.bot_robots_relocate_cron_desc
+      commentHtml: true
+      default: off
+      span: row
+      spanClass: col-xs-12 col-md-4
 
     bot_robots_test:
       tab: synder.analytics::lang.config._tabs.bots
       type: partial
       path: $/synder/analytics/models/settings/honeypot.htm
+      comment: synder.analytics::lang.config.bot_robots_test_comment
 
     section_bot_inlink:
       tab: synder.analytics::lang.config._tabs.bots
@@ -130,7 +141,7 @@ tabs:
       comment: synder.analytics::lang.config.bot_inlink_desc
       default: off
       span: row
-      spanClass: col-xs-12 col-md-6
+      spanClass: col-xs-12 col-md-4
 
     bot_inlink_relocate:
       tab: synder.analytics::lang.config._tabs.bots
@@ -139,12 +150,23 @@ tabs:
       comment: synder.analytics::lang.config.bot_inlink_relocate_desc
       default: off
       span: row
-      spanClass: col-xs-12 col-md-6
+      spanClass: col-xs-12 col-md-4
+
+    bot_inlink_relocate_cron:
+      tab: synder.analytics::lang.config._tabs.bots
+      type: switch
+      label: synder.analytics::lang.config.bot_robots_relocate_cron
+      comment: synder.analytics::lang.config.bot_robots_relocate_cron_desc
+      commentHtml: true
+      default: off
+      span: row
+      spanClass: col-xs-12 col-md-4
 
     bot_inlink_test:
       tab: synder.analytics::lang.config._tabs.bots
       type: partial
       path: $/synder/analytics/models/settings/honeypot.htm
+      comment: synder.analytics::lang.config.bot_robots_test_comment
 
     hint_event_manager:
       tab: synder.analytics::lang.config._tabs.events

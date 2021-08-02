@@ -65,7 +65,7 @@ class Visitor extends Model
      */
     static public function generateHash()
     {
-        $value = $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ?? Session::getId());
+        $value = $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ?? 'local') . date('Y-m-d');
         return hash_hmac('sha1', $value, env('APP_KEY'));
     }
 }

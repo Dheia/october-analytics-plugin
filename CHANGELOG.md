@@ -17,6 +17,7 @@ Version 1.1.0
 -   Add: Option to toggle the chart legend on the system / os widget.
 -   Add: Option to define the timeperiod on top-referrers and top-pages widgets.
 -   Add: Option to define the amount of shown items on top-referrers and top-pages widgets.
+-   Add: The new Twig Filter `synderviews` and `syndervisits` to receive these counter per URL / path.
 -   Update: Don't skip favicon.ico, rather hide favicon.ico and robots.txt requests per default.
 -   Bugfix: Duplicated tick for the first counted date on basic statistics widget.
 -   Bugfix: Missing Date-Tick on basic statistics widget.

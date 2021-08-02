@@ -167,4 +167,19 @@ class Plugin extends PluginBase
             ]
         ];
     }
+
+    /**
+     * Register Twig Markup
+     * 
+     * @return array
+     */
+    public function registerMarkupTags()
+    {
+        return [
+            'filters' => [
+                'synderviews' => [Page::class, 'markupViews'],
+                'syndervisits' => [Page::class, 'markupVisits'],
+            ]
+        ];
+    }
 }

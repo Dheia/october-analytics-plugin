@@ -4,7 +4,7 @@ namespace Synder\Analytics\Models;
 
 use Model;
 use System\Behaviors\SettingsModel;
-
+use System\Classes\PluginManager;
 
 class Settings extends Model
 {
@@ -69,5 +69,66 @@ class Settings extends Model
         } else if($this->dateformat === 'custom') {
             return $this->customformat;
         }
+    }
+
+    /**
+     * Get Robots TXT
+     * 
+     * @return string
+     */
+    public function generateRobotsTxt()
+    {
+        $value = "\n\n";
+        $value .= '#[synder time=' . $this->value['bot_robots_time'] . ']' . "\n";
+        $value .= 'User-Agent: *' . "\n";
+        $value .= 'Disallow: /' . $this->value['bot_robots_link'] . "\n";
+        $value .= '#[/synder]' . "\n\n";
+        return $value;
+    }
+
+    /**
+     * Set RobotsTXT Values
+     *
+     * @return void
+     */
+    protected function setRobotsTxt()
+    {
+        $this->bot_robots_time = time();
+        $this->bot_robots_link = bin2hex(random_bytes(6));
+
+        $plugins = PluginManager::instance();
+        if ($plugins->exists('zen.robots')) {
+
+        }
+    }
+
+    /**
+     * Unset RobotsTXT Values
+     *
+     * @return void
+     */
+    protected function unsetRobotsTxt()
+    {
+
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
+    protected function setInvisibleLink()
+    {
+
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
+    protected function unsetInvisibleLink()
+    {
+
     }
 }

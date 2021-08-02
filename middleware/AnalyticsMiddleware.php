@@ -6,10 +6,9 @@ use BackendAuth;
 use Closure;
 use Exception;
 use Log;
-use DeviceDetector\DeviceDetector;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\Str;
-
+use Synder\Analytics\Classes\BotProbability;
 use Synder\Analytics\Models\Page;
 use Synder\Analytics\Models\Referrer;
 use Synder\Analytics\Models\Request;
@@ -65,21 +64,31 @@ class AnalyticsMiddleware
         }
 
         // Parse User Agent
-        $is_bot = false;
-        $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
-        if (!empty($user_agent)) {
-            $dd = new DeviceDetector($_SERVER['HTTP_USER_AGENT']);
-            $dd->parse();
-
-            if (!empty($dd->getClient())) {
-                $is_bot = $dd->isBot();
+        if (!empty($user->agent)) {
+            if ($user->agent['agent'] === $_SERVER['HTTP_USER_AGENT']) {
+                $user_agent = $user->agent['agent'];
+            }
+        }
+        if (!isset($user_agent)) {
+            $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
+            if (!empty($user_agent) && Settings::get('bot_lazy') === 1) {
+                $bot = new BotProbability($user_agent);
+    
+                $user_agent = [
+                    'agent'     => $bot->getUserAgent(),
+                    'client'    => $bot->isValid()? $bot->getClient(): null,
+                    'os'        => $bot->isValid()? $bot->getOs(): null,
+                    'device'    => $bot->isValid()? $bot->getDeviceName(): null,
+                    'brand'     => $bot->isValid()? $bot->getBrandName(): null,
+                    'model'     => $bot->isValid()? $bot->getModel(): null,
+                    'valid'     => $bot->isValid(),
+                    'evaluated' => true
+                ];
+            } else {
                 $user_agent = [
                     'agent'     => $_SERVER['HTTP_USER_AGENT'],
-                    'client'    => $dd->getClient(),
-                    'os'        => $dd->getOs(),
-                    'device'    => $dd->getDeviceName(),
-                    'brand'     => $dd->getBrandName(),
-                    'model'     => $dd->getModel()
+                    'valid'     => null,
+                    'evaluated' => false
                 ];
             }
         }
@@ -95,6 +104,8 @@ class AnalyticsMiddleware
         // Update User
         $user->bot = 0.0;
         $user->agent = $user_agent ?? $user->agent ?? null;
+        $user->browser = isset($user_agent['browser'])? $user_agent['browser']: null;
+        $user->os = isset($user_agent['os'])? $user_agent['os']: null;
         $user->views += 1;
         $user->visits += $is_new? 1: 0;
         $user->last_visit = $is_new? date('Y-m-d H:i:s'): $user->last_visit;
