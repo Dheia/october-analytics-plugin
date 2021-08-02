@@ -7,6 +7,7 @@ use Closure;
 use Exception;
 use Log;
 use Illuminate\Http\Request as HttpRequest;
+use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Support\Str;
 use Synder\Analytics\Classes\BotProbability;
 use Synder\Analytics\Models\Page;
@@ -14,7 +15,7 @@ use Synder\Analytics\Models\Referrer;
 use Synder\Analytics\Models\Request;
 use Synder\Analytics\Models\Settings;
 use Synder\Analytics\Models\Visitor;
-
+use System\Helpers\View;
 
 class AnalyticsMiddleware
 {
@@ -27,15 +28,87 @@ class AnalyticsMiddleware
      */
     public function handle(HttpRequest $request, Closure $next)
     {
-        $response = $next($request);
+        $settings = Settings::instance();
 
-        try {
-            $this->perform($request, $response);
-        } catch(Exception $exception) {
-            Log::error($exception->getMessage());
+        // robots.txt calls
+        if ($settings->getRobotsTxtProvider() === 'synder.analytics') {
+            $response = $this->handleRobotsTxt($request);
+        }
+        $path = ltrim(explode('?', $request->getRequestUri())[0], '/');
+        
+        // robots.txt Honeypot
+        if ($settings->get('bot_robots') === '1' && $settings->get('bot_robots_link') === $path) {
+            $response = $this->handleHoneypot($request, 'robots');
         }
 
+        // Invisible Link Honeypot
+        if ($settings->get('bot_inlink') === '1' && $settings->get('bot_inlink_link') === $path) {
+            $response = $this->handleHoneypot($request, 'inlink');
+        }
+
+        // Handle other Responses
+        if ($response === null) {
+            $response = $next($request);
+        }
+
+        // Do some Analytics Stuff
+        if ($response->headers->get('X-Synder-Analytics') === null) {
+            try {
+                $this->perform($request, $response);
+            } catch(Exception $exception) {
+                Log::error($exception->getMessage());
+            }
+        }
+        
+        // Return
         return $response;
+    }
+
+    /**
+     * Handle robots.txt Calls
+     * 
+     * @param HttpRequest $request
+     * @return \Illuminate\Http\Response|null
+     */
+    protected function handleRobotsTxt(HttpRequest $request)
+    {
+        if (Settings::get('bot_robots') === '0') {
+            return null;
+        }
+        $path = explode('?', $request->getRequestUri())[0];
+
+        if ($path !== '/robots.txt') {
+            return null;
+        } else {
+            $content = Settings::instance()->generateRobotsTxt();
+            return HttpResponse::create($content, 200, [
+                'Content-Type' => 'text/plain; charset=UTF-8',
+                'Content-Length' => strlen($content)
+            ]);
+        }
+    }
+
+    /**
+     * Handle Honeypot Calls
+     * 
+     * @param HttpRequest $request
+     * @param string $type
+     * @return \Illuminate\Http\Response
+     */
+    protected function handleHoneypot(HttpRequest $request, string $type)
+    {
+        if (($user = $this->getUser($request, null)) === false) {
+            return;
+        }
+        $user->addBotDetail("$type" . "_trap", true);
+        $user->evaluate();
+        $user->save();
+
+        // Return Redirect
+        return HttpResponse::create('', 303, [
+            'Location' => $request->getUriForPath('/'),
+            'X-Synder-Analytics' => 1
+        ]);
     }
 
     /**
@@ -63,33 +136,13 @@ class AnalyticsMiddleware
             return;
         }
 
-        // Parse User Agent
-        if (!empty($user->agent)) {
-            if ($user->agent['agent'] === $_SERVER['HTTP_USER_AGENT']) {
-                $user_agent = $user->agent['agent'];
-            }
+        // Prepare Visitor
+        if (empty($user->agent)) {
+            $user->agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
         }
-        if (!isset($user_agent)) {
-            $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
-            if (!empty($user_agent) && Settings::get('bot_lazy') === 1) {
-                $bot = new BotProbability($user_agent);
-    
-                $user_agent = [
-                    'agent'     => $bot->getUserAgent(),
-                    'client'    => $bot->isValid()? $bot->getClient(): null,
-                    'os'        => $bot->isValid()? $bot->getOs(): null,
-                    'device'    => $bot->isValid()? $bot->getDeviceName(): null,
-                    'brand'     => $bot->isValid()? $bot->getBrandName(): null,
-                    'model'     => $bot->isValid()? $bot->getModel(): null,
-                    'valid'     => $bot->isValid(),
-                    'evaluated' => true
-                ];
-            } else {
-                $user_agent = [
-                    'agent'     => $_SERVER['HTTP_USER_AGENT'],
-                    'valid'     => null,
-                    'evaluated' => false
-                ];
+        if (empty($user->agent_details)) {
+            if (Settings::get('bot_lazy') === '0') {
+                $user->evaluate();
             }
         }
 
@@ -102,10 +155,7 @@ class AnalyticsMiddleware
         $page->save();
 
         // Update User
-        $user->bot = 0.0;
-        $user->agent = $user_agent ?? $user->agent ?? null;
-        $user->browser = isset($user_agent['browser'])? $user_agent['browser']: null;
-        $user->os = isset($user_agent['os'])? $user_agent['os']: null;
+        $user->bot = $is_new? 0.0: $user->bot;
         $user->views += 1;
         $user->visits += $is_new? 1: 0;
         $user->last_visit = $is_new? date('Y-m-d H:i:s'): $user->last_visit;
@@ -182,11 +232,11 @@ class AnalyticsMiddleware
      * Get current User
      *
      * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Http\Response $response
-     * @param \Synder\Analytics\Models\Page $page
+     * @param \Illuminate\Http\Response|null $response
+     * @param \Synder\Analytics\Models\Page|null $page
      * @return \Synder\Analytics\Models\Visitor|false
      */
-    public function getUser(HttpRequest $request, $response)
+    public function getUser(HttpRequest $request, $response = null, $page = null)
     {
         // Skip logged in backend users
         if (Settings::get('filter_backend_users') && BackendAuth::check()) {

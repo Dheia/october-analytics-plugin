@@ -116,6 +116,18 @@ tabs:
       span: row
       spanClass: col-xs-12 col-md-4
 
+    bot_robots_time:
+      tab: synder.analytics::lang.config._tabs.bots
+      type: text
+      default: 0
+      hidden: true
+      
+    bot_robots_link:
+      tab: synder.analytics::lang.config._tabs.bots
+      type: text
+      default: ''
+      hidden: true
+
     bot_robots_test:
       tab: synder.analytics::lang.config._tabs.bots
       type: partial
@@ -161,6 +173,18 @@ tabs:
       default: off
       span: row
       spanClass: col-xs-12 col-md-4
+
+    bot_inlink_time:
+      tab: synder.analytics::lang.config._tabs.bots
+      type: text
+      default: 0
+      hidden: true
+      
+    bot_inlink_link:
+      tab: synder.analytics::lang.config._tabs.bots
+      type: text
+      default: ''
+      hidden: true
 
     bot_inlink_test:
       tab: synder.analytics::lang.config._tabs.bots

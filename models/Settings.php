@@ -41,13 +41,56 @@ class Settings extends Model
     /**
      * @inheritDoc
      */
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->bindEvent('model.beforeSave', [$this, 'customizeValue']);
+        $this->bindEvent('model.afterSave', [$this, 'updateRobotsTxtProvider']);
+    }
+
+    /**
+     * Customize Value
+     * 
+     * @return void
+     */
+    public function customizeValue()
+    {
+        if ($this->value['bot_robots'] === '1') {
+            $this->setRobotsTxt();
+        } else {
+            $this->unsetRobotsTxt();
+        }
+
+        if ($this->value['bot_inlink'] === '1') {
+            $this->setInvisibleLink();
+        } else {
+            $this->unsetInvisibleLink();
+        }
+    }
+    
+    /**
+     * @inheritDoc
+     */
     public function initSettingsData()
     {
         $this->filter_backend_users = 1;
         $this->weekstart = 0;
         $this->dateformat = 'plain';
+
         $this->bot_lazy = 1;
         $this->bot_filter = 4.2;
+
+        $this->bot_robots = '0';
+        $this->bot_robots_relocate = '0';
+        $this->bot_robots_relocate_cron = '0';
+        $this->bot_robots_time = 0;
+        $this->bot_robots_link = '';
+
+        $this->bot_inlink = '0';
+        $this->bot_inlink_relocate = '0';
+        $this->bot_inlink_relocate_cron = '0';
+        $this->bot_inlink_time = 0;
+        $this->bot_inlink_link = '';
     }
 
     /**
@@ -87,18 +130,70 @@ class Settings extends Model
     }
 
     /**
+     * Get RobotsTXT Provider
+     * 
+     * @return string
+     */
+    public function getRobotsTxtProvider()
+    {
+        $plugins = PluginManager::instance();
+
+        if ($plugins->exists('arcane.seo')) {
+            return 'arcane.seo';
+        } else if ($plugins->exists('mohsin.txt')) {
+            return 'mohsin.txt';
+        } else if ($plugins->exists('Zen.Robots')) {
+            return 'zen.robots';
+        } else {
+            return 'synder.analytics';
+        }
+    }
+
+    /**
+     * Update RobotsTXT Provider
+     *
+     * @return void
+     */
+    public function updateRobotsTxtProvider()
+    {
+        if ($this->getRobotsTxtProvider() === 'synder.analytics') {
+            return;
+        }
+
+        if ($this->getRobotsTxtProvider() === 'zen.robots') {
+            $content = \Zen\Robots\Models\Settings::get('content');
+
+            [$start, $end] = [strpos($content, '#[synder'), strpos($content, '#[/synder]')];
+            if ($start !== false) {
+                $content = substr($content, 0, $start) . substr($content, $end + 12);
+            }
+            $content = trim($content) . $this->generateRobotsTxt();
+            
+            \Zen\Robots\Models\Settings::set('content', $content);
+            return;
+        }
+    }
+
+    /**
      * Set RobotsTXT Values
      *
      * @return void
      */
     protected function setRobotsTxt()
     {
-        $this->bot_robots_time = time();
-        $this->bot_robots_link = bin2hex(random_bytes(6));
+        if (!empty($this->value['bot_robots_time'])) {
+            if (time() - $this->value['bot_robots_time'] > 90 * 24 * 60 * 60) {
+                $create = true;
+            }
+        } else {
+            $create = true;
+        }
 
-        $plugins = PluginManager::instance();
-        if ($plugins->exists('zen.robots')) {
-
+        if (isset($create)) {
+            $this->value = array_merge($this->value, [
+                'bot_robots_time' => time(),
+                'bot_robots_link' => bin2hex(random_bytes(6))
+            ]);
         }
     }
 
@@ -109,7 +204,10 @@ class Settings extends Model
      */
     protected function unsetRobotsTxt()
     {
-
+        $this->value = array_merge($this->value, [
+            'bot_robots_time' => 0,
+            'bot_robots_link' => ''
+        ]);
     }
 
     /**

@@ -7,12 +7,14 @@ use Event;
 use Backend\Classes\NavigationManager;
 use Cms\Classes\CmsController;
 use Cms\Classes\Page as RequestPage;
+use Illuminate\Support\Facades\DB;
 use Synder\Analytics\FormWidgets\Slider;
 use System\Classes\PluginBase;
 
 use Synder\Analytics\Middleware\AnalyticsMiddleware;
 use Synder\Analytics\Models\Page;
 use Synder\Analytics\Models\Settings;
+use Synder\Analytics\Models\Visitor;
 use Synder\Analytics\Widgets\SimplePages;
 use Synder\Analytics\Widgets\SimpleReferrers;
 use Synder\Analytics\Widgets\SimpleStatistics;
@@ -66,6 +68,12 @@ class Plugin extends PluginBase
         });
 
         RequestPage::extend(fn($model) => $this->extendPageModel($model));
+
+        
+        $items = Visitor::all();
+        foreach ($items AS $item) {
+            $item->evaluate(true);
+        }
 
         //@todo
         //Event::listen('backend.menu.extendItems', function (NavigationManager $manager) {
