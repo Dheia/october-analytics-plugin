@@ -105,7 +105,7 @@ class SimpleStatistics extends ReportWidgetBase
             ->groupByRaw('DATE(created_at)')
             ->orderByRaw('DATE(created_at) DESC')
             ->join('synder_analytics_visitors', 'synder_analytics_visitors.id', '=', 'synder_analytics_requests.visitor_id')
-            ->where('synder_analytics_visitors.bot', '<', intval(Settings::get('bot_filter')))
+            ->where('synder_analytics_visitors.bot', '<', intval(Settings::get('bot_filter', 4.2)))
             ->limit(7)
             ->get()
             ->mapWithKeys(fn ($item, $key) => [$item['date'] => $item])

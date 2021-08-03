@@ -21,7 +21,20 @@ return [
             'title' => 'Synder Statistik - Allgemein',
             'views' => 'Aufrufe',
             'visits' => 'Besuche',
-            'visitors' => 'Besucher'
+            'visitors' => 'Besucher',
+            'count_value' => 'Heute / 7 Tage',
+            'toggle' => 'Zum Umschalten klicken',
+            'show_counts' => 'Zähler anzeigen',
+            'color_views' => 'Farbe Aufrufe',
+            'color_visits' => 'Farbe Besuche',
+            'color_visitors' => 'Farbe Besucher',
+            'color_error' => 'Bitte gebe einen gültigen HEX-Wert an (bsp.: #008dc9).'
+        ],
+        'systems' => [
+            'label' => 'Statistik - Browser / OS Nutzung',
+            'title' => 'Synder Statistik - Browser / OS Nutzung',
+            'empty' => 'Noch keine Daten verfügbar.',
+            'show_legend' => 'Legende anzeigen'
         ],
         'referrers' => [
             'label' => 'Statistik - Häufigsten Referrers',
@@ -30,12 +43,10 @@ return [
             'tr_urls' => 'Zugehörige URLs',
             'tr_views' => 'Aufrufe',
             'tr_last' => 'Letzter Besuch',
-            'table_empty' => 'Noch keine Referrers verfügbar.'
-        ],
-        'systems' => [
-            'label' => 'Statistik - Browser / OS Nutzung',
-            'title' => 'Synder Statistik - Browser / OS Nutzung',
-            'empty' => 'Noch keine Daten verfügbar.'
+            'table_empty' => 'Noch keine Referrers verfügbar.',
+            'timeperiod' => 'Zeitperiode',
+            'amount' => 'Anzahl der Einträge',
+            'amount_error' => 'Bitte gebe lediglich Nummern an'
         ],
         'pages' => [
             'label' => 'Statistik - Beliebte Seiten',
@@ -45,10 +56,9 @@ return [
             'tr_visits' => 'Besuche',
             'tr_last' => 'Letzter Besuch',
             'table_empty' => 'Noch keine Daten verfügbar.',
-
-            'config' => [
-                'timeperiod' => 'Zeitperiode'
-            ]
+            'timeperiod' => 'Zeitperiode',
+            'amount' => 'Anzahl der Einträge',
+            'amount_error' => 'Bitte gebe lediglich Nummern an'
         ]
     ],
 
@@ -98,6 +108,10 @@ return [
             'friday' => 'Freitag',
             'saturday' => 'Samstag'
         ],
+        
+        'section_development' => 'Entwicklungseinstellungen',
+        'dev_reevaluate' => 'User Agents neu evaluieren',
+        'dev_reevaluate_desc' => 'Manuelle Neu-Evaluierung der Bot-Wahrscheinlichkeit anhand der User Agents.',
 
         'bot_lazy' => 'Langsame Bot-Evaluierung',
         'bot_lazy_desc' => 'Die Performanz des Besuchers wird bei einer langsamen Evaluierung nicht beeinträchtigt.<br />Nutze diese Option, wenn du den Bot-Wahrscheinlichkeitsfilter ohnehin nur für die Statistiken verwendest.',
@@ -111,7 +125,17 @@ return [
         'bot_robots_desc' => 'Fügt eine generierte Honeypot Seite zur robots.txt Datei hinzu.',
         'bot_robots_relocate' => 'robots.txt Eintrag neu belegen',
         'bot_robots_relocate_desc' => 'Belegt die eingetragene robots.txt URL alle 90 Tage neu.',
+        'bot_robots_relocate_cron' => 'Als "Scheduled Task" ausführen',
+        'bot_robots_relocate_cron_desc' => 'Scheduled Tasks erfordern <a href="https://octobercms.com/docs/setup/installation#crontab-setup" target="_blank">erweiterte OctoberCMS Schritte</a>.',
         'bot_robots_test' => 'robots.txt testen',
+        'bot_robots_test_comment' => 'Speichere die Einstellungen vor dem Testen.',
+
+        
+        'bot_robots_relocate' => 'Re-Locate robots.txt entry',
+        'bot_robots_relocate_desc' => 'Relocates the robots.txt entry all 90-days.',
+        
+        'bot_robots_test' => 'Test robots.txt',
+        'bot_robots_test_comment' => 'Save your settings before testing.',
 
         'section_bot_inlink' => 'Invisible-Link Honeypot',
         'hint_bot_inlink_label' => 'Was bringt ein Invisible-Link?',

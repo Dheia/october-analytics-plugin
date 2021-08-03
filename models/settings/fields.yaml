@@ -2,6 +2,9 @@ tabs:
   stretch: true
   defaultTab: synder.analytics::lang.config._tabs.general
   fields:
+    version:
+      tab: synder.analytics::lang.config._tabs.general
+      hidden: true
 
     # General Settings
     filter_backend_users:
@@ -144,6 +147,7 @@ tabs:
       type: partial
       path: $/synder/analytics/models/settings/honeypot.htm
       comment: synder.analytics::lang.config.bot_robots_test_comment
+      hidden: true
 
     section_bot_inlink:
       tab: synder.analytics::lang.config._tabs.bots
@@ -202,6 +206,7 @@ tabs:
       type: partial
       path: $/synder/analytics/models/settings/honeypot.htm
       comment: synder.analytics::lang.config.bot_robots_test_comment
+      hidden: true
 
     hint_event_manager:
       tab: synder.analytics::lang.config._tabs.events

@@ -53,7 +53,7 @@ class SimpleSystems extends ReportWidgetBase
     {
         $date = date('Y-m-d', time() - 14 * 24 * 60 * 60) . ' 00:00:00';
         $data = Visitor::select(['agent', 'browser', 'os'])
-            ->where('bot', '<', intval(Settings::get('bot_filter')))
+            ->where('bot', '<', intval(Settings::get('bot_filter', 4.2)))
             ->where('first_visit', '>=', $date)
             ->get();
 

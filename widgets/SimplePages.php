@@ -70,6 +70,7 @@ class SimplePages extends ReportWidgetBase
         $limit = intval($this->property('amount', 5));
         $pages = Page::selectRaw('method, path, views, visits, updated_at AS last_viewed')
             ->where('created_at', '>=', $date)
+            ->where('hide', '=', 0)
             ->orderByDesc('visits')
             ->orderByDesc('views')
             ->orderByDesc('updated_at')

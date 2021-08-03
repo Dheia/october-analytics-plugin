@@ -288,22 +288,38 @@ class Settings extends Model
     }
 
     /**
-     * Undocumented function
+     * Set Invisible Link Values
      *
      * @return void
      */
     protected function setInvisibleLink()
     {
+        if (!empty($this->value['bot_inlink_time'])) {
+            if (time() - $this->value['bot_inlink_time'] > 90 * 24 * 60 * 60) {
+                $create = true;
+            }
+        } else {
+            $create = true;
+        }
 
+        if (isset($create)) {
+            $this->value = array_merge($this->value, [
+                'bot_inlink_time' => time(),
+                'bot_inlink_link' => bin2hex(random_bytes(6))
+            ]);
+        }
     }
 
     /**
-     * Undocumented function
+     * Unset Invisible Link Values
      *
      * @return void
      */
     protected function unsetInvisibleLink()
     {
-
+        $this->value = array_merge($this->value, [
+            'bot_inlink_time' => 0,
+            'bot_inlink_link' => ''
+        ]);
     }
 }
