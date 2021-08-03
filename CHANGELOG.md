@@ -1,6 +1,10 @@
 Changelog
 =========
 
+Version 1.1.2
+-------------
+-   Bugfix: Visitor -> Bot Probability bug
+
 Version 1.1.1
 -------------
 -   Update: Use default values as placeholder on simple statistics widget.

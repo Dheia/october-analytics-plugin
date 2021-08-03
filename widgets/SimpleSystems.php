@@ -54,8 +54,7 @@ class SimpleSystems extends ReportWidgetBase
     public function render()
     {
         $date = date('Y-m-d', time() - 14 * 24 * 60 * 60) . ' 00:00:00';
-        $data = Visitor::select(['agent', 'browser', 'os'])
-            ->where('bot', '<', intval(Settings::get('bot_filter', 4.2)))
+        $data = Visitor::where('bot', '<', intval(Settings::get('bot_filter', 4.2)))
             ->where('first_visit', '>=', $date)
             ->get();
 
@@ -66,6 +65,11 @@ class SimpleSystems extends ReportWidgetBase
         foreach ($data AS $item) {
             if (empty($item->agent)) {
                 continue;
+            }
+            if (($item->attributes['bot'] ?? 0.0) === 0.0) {
+                if(($bot = $item->bot) >= intval(Settings::get('bot_filter', 4.2))) {
+                     continue;
+                }
             }
 
             if (!empty($item->browser)) {
@@ -80,7 +84,7 @@ class SimpleSystems extends ReportWidgetBase
             }
             $this->vars['browserlist'][$browser]++;
             $this->vars['counters'][0]++;
-            
+
             if (!empty($item->os)) {
                 $os = $item->os;
             } else {

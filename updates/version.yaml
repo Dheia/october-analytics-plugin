@@ -47,3 +47,7 @@
     - 'Version 1.1.1 - Small Fix (Check CHANGELOG.md for details)'
     - 'Update: Use default values as placeholder on simple statistics widget.'
     - 'Bugfix: Wrong use of Accessors (Laravel).'
+1.1.2:
+    - 'Version 1.1.2 - Small Fix (Check CHANGELOG.md for details)'
+    - 'Bugfix: Visitor -> Bot Probability bug'
+

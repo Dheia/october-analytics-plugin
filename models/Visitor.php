@@ -108,6 +108,7 @@ class Visitor extends Model
             $this->browser = $detect->getBrowserDetail();
             $this->os = $detect->getOsDetail();
             $this->save();
+            $this->reload();
         } else {
             $this->bot = $detect->getProbability();
             $this->bot_details = $detect->probabilities;
@@ -145,8 +146,15 @@ class Visitor extends Model
      */
     public function getBotAttribute($value)
     {
-        $this->evaluate(true);
-        return $this->attributes['bot'] ?? $value ?? 0.0;
+        if (empty($this->agent)) {
+            return 0.0;
+        }
+        if (empty($value)) {
+            $this->evaluate(true);
+            return $this->attributes['bot'] ?? 0.0;
+        } else {
+            return $value;
+        }
     }
 
     /**
@@ -159,10 +167,12 @@ class Visitor extends Model
         if (empty($this->agent)) {
             return '';
         }
-        if (empty($value)) {
+        if (empty($value) && empty($this->attributes['agent_details'])) {
             $this->evaluate(true);
+            return $this->attributes['browser'] ?? '';
+        } else {
+            return $value;
         }
-        return $value ?? $this->attributes['browser'] ?? '';
     }
 
     /**
@@ -175,9 +185,11 @@ class Visitor extends Model
         if (empty($this->agent)) {
             return '';
         }
-        if (empty($value)) {
+        if (empty($value) && empty($this->attributes['agent_details'])) {
             $this->evaluate(true);
+            return $this->attributes['os'] ?? '';
+        } else {
+            return $value;
         }
-        return $value ?? $this->attributes-['os'] ?? '';
     }
 }
