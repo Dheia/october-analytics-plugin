@@ -6,11 +6,14 @@ use BackendAuth;
 use Closure;
 use Exception;
 use Log;
-use DeviceDetector\DeviceDetector;
 use Illuminate\Http\Request as HttpRequest;
+use Illuminate\Http\Response as HttpResponse;
+use Illuminate\Support\Str;
+
 use Synder\Analytics\Models\Page;
 use Synder\Analytics\Models\Referrer;
 use Synder\Analytics\Models\Request;
+use Synder\Analytics\Models\Settings;
 use Synder\Analytics\Models\Visitor;
 
 
@@ -25,15 +28,94 @@ class AnalyticsMiddleware
      */
     public function handle(HttpRequest $request, Closure $next)
     {
-        $response = $next($request);
+        $settings = Settings::instance();
 
-        try {
-            $this->perform($request, $response);
-        } catch(Exception $exception) {
-            Log::error($exception->getMessage());
+        // robots.txt calls
+        if ($settings->getRobotsTxtProvider() === 'synder.analytics') {
+            $response = $this->handleRobotsTxt($request);
+        }
+        $path = ltrim(explode('?', $request->getRequestUri())[0], '/');
+        
+        // robots.txt Honeypot
+        if ($settings->get('bot_robots') === '1' && $settings->get('bot_robots_link') === $path) {
+            $response = $this->handleHoneypot($request, 'robots');
         }
 
+        // Invisible Link Honeypot
+        if ($settings->get('bot_inlink') === '1' && $settings->get('bot_inlink_link') === $path) {
+            $response = $this->handleHoneypot($request, 'inlink');
+        }
+
+        // Handle other Responses
+        if (!isset($response) || $response === null) {
+            $response = $next($request);
+        }
+
+        // Do some Analytics Stuff
+        if ($response->headers->get('X-Synder-Analytics') === null) {
+            try {
+                $this->perform($request, $response);
+            } catch(Exception $exception) {
+                Log::error($exception->getMessage());
+            }
+        }
+        
+        // Return
         return $response;
+    }
+
+    /**
+     * Handle robots.txt Calls
+     * 
+     * @param HttpRequest $request
+     * @return \Illuminate\Http\Response|null
+     */
+    protected function handleRobotsTxt(HttpRequest $request)
+    {
+        if (Settings::get('bot_robots') === '0') {
+            return null;
+        }
+        $path = explode('?', $request->getRequestUri())[0];
+
+        if ($path !== '/robots.txt') {
+            return null;
+        } else {
+            $content = Settings::instance()->generateRobotsTxt();
+            return HttpResponse::create($content, 200, [
+                'Content-Type' => 'text/plain; charset=UTF-8',
+                'Content-Length' => strlen($content)
+            ]);
+        }
+    }
+
+    /**
+     * Handle Honeypot Calls
+     * 
+     * @param HttpRequest $request
+     * @param string $type
+     * @return \Illuminate\Http\Response
+     */
+    protected function handleHoneypot(HttpRequest $request, string $type)
+    {
+        if (($user = $this->getUser($request, null)) === false) {
+            return;
+        }
+        $user->addBotDetail($type . '_trap', true);
+        $user->evaluate(false);
+        $user->save();
+
+        // Update Link
+        if (Settings::get('bot_' . $type . '_relocate') === '1') {
+            if (time() - Settings::get('bot_' . $type . '_time') > 90 * 24 * 60 * 60) {
+                Settings::set('bot_' . $type . '_link', '0');
+            }
+        }
+
+        // Return Redirect
+        return HttpResponse::create('', 303, [
+            'Location' => $request->getUriForPath('/'),
+            'X-Synder-Analytics' => 1
+        ]);
     }
 
     /**
@@ -61,23 +143,13 @@ class AnalyticsMiddleware
             return;
         }
 
-        // Parse User Agent
-        $is_bot = false;
-        $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
-        if (!empty($user_agent)) {
-            $dd = new DeviceDetector($_SERVER['HTTP_USER_AGENT']);
-            $dd->parse();
-
-            if (!empty($dd->getClient())) {
-                $is_bot = $dd->isBot();
-                $user_agent = [
-                    'agent'     => $_SERVER['HTTP_USER_AGENT'],
-                    'client'    => $dd->getClient(),
-                    'os'        => $dd->getOs(),
-                    'device'    => $dd->getDeviceName(),
-                    'brand'     => $dd->getBrandName(),
-                    'model'     => $dd->getModel()
-                ];
+        // Prepare Visitor
+        if (empty($user->agent)) {
+            $user->agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
+        }
+        if (empty($user->agent_details)) {
+            if (Settings::get('bot_lazy') === '0') {
+                $user->evaluate();
             }
         }
 
@@ -90,8 +162,7 @@ class AnalyticsMiddleware
         $page->save();
 
         // Update User
-        $user->bot = 0.0;
-        $user->agent = $user_agent ?? $user->agent ?? null;
+        $user->bot = $is_new? 0.0: $user->bot;
         $user->views += 1;
         $user->visits += $is_new? 1: 0;
         $user->last_visit = $is_new? date('Y-m-d H:i:s'): $user->last_visit;
@@ -146,9 +217,25 @@ class AnalyticsMiddleware
             return false;
         }
 
-        // Skip Favicon
-        if (strpos($handle, 'favicon.ico') !== false) {
-            return false;
+        // Hide URL 
+        $hide = false;
+        $autoHide = [
+            'favicon.ico',
+            'robots.txt',
+            'humans.txt',
+            'sitemaps.xml',
+            'sitemap.xml.gz',
+            'sitemap.xml',
+            'sitemap.txt',
+            'sitemap_index.txt',
+            'atom.xml',
+            'rss.xml'
+        ];
+        foreach ($autoHide AS $path) {
+            if (Str::endsWith($handle, $path)) {
+                $hide = true;
+                break;
+            }
         }
 
         // Return Page
@@ -157,6 +244,7 @@ class AnalyticsMiddleware
         ], [
             'method'    => $method,
             'path'      => $handle,
+            'hide'      => $hide,
             'views'     => 0,
             'visits'    => 0
         ]);
@@ -166,14 +254,14 @@ class AnalyticsMiddleware
      * Get current User
      *
      * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Http\Response $response
-     * @param \Synder\Analytics\Models\Page $page
+     * @param \Illuminate\Http\Response|null $response
+     * @param \Synder\Analytics\Models\Page|null $page
      * @return \Synder\Analytics\Models\Visitor|false
      */
-    public function getUser(HttpRequest $request, $response)
+    public function getUser(HttpRequest $request, $response = null, $page = null)
     {
         // Skip logged in backend users
-        if (BackendAuth::check()) {
+        if (Settings::get('filter_backend_users') && BackendAuth::check()) {
             return false;
         }
 

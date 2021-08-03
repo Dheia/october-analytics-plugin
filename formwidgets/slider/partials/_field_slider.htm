@@ -1,0 +1,25 @@
+
+<div data-synder data-slider-min="<?= e($selectableMin) ?>" data-slider-max="<?= e($selectableMax) ?>">
+    <div class="form-group span-row col-xs-8 col-md-10" data-field-name="<?= e($field->fieldName) ?>" style="padding: 13px 15px 0;">
+        <input 
+            type="range" 
+            class="custom-range" 
+            min="<?= e($min) ?>" 
+            max="<?= e($max) ?>" 
+            step="<?= e($step); ?>" 
+            name="<?= e($field->getName()) ?>" 
+            value="<?= e($value) ?>" 
+        />
+    </div>
+    
+    <div class="form-group span-row col-xs-4 col-md-2" data-field-name="<?= e($field->fieldName) ?>-show" style="padding: 0;">
+        <input 
+            type="number"
+            min="<?= e($min) ?>" 
+            max="<?= e($max) ?>" 
+            step="<?= e($step); ?>" 
+            value="<?= e($value) ?>" 
+            class="form-control" 
+        />
+    </div>
+</div>
