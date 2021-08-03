@@ -20,7 +20,7 @@ precise as with JavaScript-based support.
 -   Simple but limited Bot-Detection (Humanity testing)
 -   Simple but limited Referrer collection
 -   Simple but limited Browser and OS detection (JavaScript-less)
--   A bunch of neat statistics within 4 **configurable** dashboard widgets
+-   A bunch of graphical statistics within 4 **configurable** dashboard widgets
 
 
 ### Bot-Detection
@@ -31,8 +31,8 @@ and is based on the following values (*-marked values must be configured before)
 -   User Agent
 -   Browser / OS
 -	Request Header
--   \* robots.txt
--   \* invisible link
+-   \* robots.txt trap
+-   \* invisible link trap
 
 The Advanced Analytics plugin contains additional, Cookie and JavaScript-based, solutions. You can 
 find more details about each single value and technique in the documentation.

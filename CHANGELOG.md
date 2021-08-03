@@ -23,9 +23,10 @@ Version 1.1.0
 -   Add: robots.txt Support for [Arcane.Seo](https://octobercms.com/plugin/arcane-seo) plugin.
 -   Add: robots.txt Support for [Mohsin.Txt](https://octobercms.com/plugin/mohsin-txt) plugin.
 -   Add: robots.txt Support for [Zen.Robots](https://octobercms.com/plugin/zen-robots) plugin.
+-   Add: Invisible Link injection on the Twig process event.
 -   Add: Scheduled Task for Robots and Invisible Link re-generation.
--   Add: German Locale.
--   Update: Don't skip favicon.ico, rather hide favicon.ico and robots.txt requests per default.
+-   Add: German Locale / Language.
+-   Update: Don't skip favicon.ico, rather hide favicon.ico and similar requests per default.
 -   Bugfix: Duplicated tick for the first counted date on basic statistics widget.
 -   Bugfix: Missing Date-Tick on basic statistics widget.
 

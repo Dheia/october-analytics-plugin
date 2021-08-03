@@ -219,8 +219,23 @@ class AnalyticsMiddleware
 
         // Hide URL 
         $hide = false;
-        if (Str::endsWith($handle, 'favicon.ico') || Str::endsWith($handle, 'robots.txt')) {
-            $hide = true;
+        $autoHide = [
+            'favicon.ico',
+            'robots.txt',
+            'humans.txt',
+            'sitemaps.xml',
+            'sitemap.xml.gz',
+            'sitemap.xml',
+            'sitemap.txt',
+            'sitemap_index.txt',
+            'atom.xml',
+            'rss.xml'
+        ];
+        foreach ($autoHide AS $path) {
+            if (Str::endsWith($handle, $path)) {
+                $hide = true;
+                break;
+            }
         }
 
         // Return Page
