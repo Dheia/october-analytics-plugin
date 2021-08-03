@@ -22,7 +22,7 @@ use Synder\Analytics\Widgets\SimpleSystems;
 
 class Plugin extends PluginBase
 {
-    const VERSION = '1.1.0';
+    const VERSION = '1.1.1';
 
     /**
      * Plugin dependencies
@@ -139,7 +139,11 @@ class Plugin extends PluginBase
      */
     protected function upgrade($version)
     {
-        if (\version_compare($version, '1.1.0', '<')) {
+        if (version_compare($version, '1.1.1', '<')) {
+            Settings::set('version', '1.1.1');
+        }
+
+        if (version_compare($version, '1.1.0', '<')) {
             $instance = Settings::instance();
             $instance->initSettingsData();
             $instance->version = '1.1.0';

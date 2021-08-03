@@ -1,6 +1,11 @@
 Changelog
 =========
 
+Version 1.1.1
+-------------
+-   Update: Use default values as placeholder on simple statistics widget.
+-   Bugfix: Wrong use of Accessors (Laravel).
+
 Version 1.1.0
 -------------
 -   Add: New settings page to configure the Synder Simple Analytics plugin.

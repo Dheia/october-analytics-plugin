@@ -180,7 +180,7 @@ class AnalyticsMiddleware
 
         // Handle Referrers
         $referrer = filter_var($_SERVER['HTTP_REFERER'] ?? '', \FILTER_VALIDATE_URL);
-        if ($referrer && ($referrer = filter_var($referrer, \FILTER_SANITIZE_URL))) {
+        if ($referrer && ($referrer = filter_var($referrer, \FILTER_SANITIZE_URL)) !== false) {
             $refhost = str_replace('www.', '', parse_url($referrer, \PHP_URL_HOST) ?? '');
             $ownhost = str_replace('www.', '', parse_url(url('/'), \PHP_URL_HOST) ?? '');
             if (strtolower($refhost) === strtolower($ownhost)) {

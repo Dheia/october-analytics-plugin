@@ -43,3 +43,7 @@
     - 'Update: Do not skip favicon.ico, rather hide favicon.ico and robots.txt requests per default.'
     - 'Bugfix: Duplicated tick for the first counted date on basic statistics widget.'
     - 'Bugfix: Missing Date-Tick on basic statistics widget.'
+1.1.1:
+    - 'Version 1.1.1 - Small Fix (Check CHANGELOG.md for details)'
+    - 'Update: Use default values as placeholder on simple statistics widget.'
+    - 'Bugfix: Wrong use of Accessors (Laravel).'

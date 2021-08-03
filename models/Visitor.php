@@ -143,10 +143,10 @@ class Visitor extends Model
      * 
      * @return string
      */
-    public function getBotAttribute()
+    public function getBotAttribute($value)
     {
         $this->evaluate(true);
-        return $this->bot;
+        return $this->attributes['bot'] ?? $value ?? 0.0;
     }
 
     /**
@@ -154,15 +154,15 @@ class Visitor extends Model
      * 
      * @return string
      */
-    public function getBrowserAttribute()
+    public function getBrowserAttribute($value)
     {
-        if (empty($this->attributes['agent'])) {
+        if (empty($this->agent)) {
             return '';
         }
-        if (empty($this->attributes['browser'])) {
+        if (empty($value)) {
             $this->evaluate(true);
         }
-        return $this->attributes['browser'];
+        return $value ?? $this->attributes['browser'] ?? '';
     }
 
     /**
@@ -170,14 +170,14 @@ class Visitor extends Model
      * 
      * @return string
      */
-    public function getOs()
+    public function getOsAttribute($value)
     {
-        if (empty($this->attributes['agent'])) {
+        if (empty($this->agent)) {
             return '';
         }
-        if (empty($this->attributes['os'])) {
+        if (empty($value)) {
             $this->evaluate(true);
         }
-        return $this->attributes['os'];
+        return $value ?? $this->attributes-['os'] ?? '';
     }
 }

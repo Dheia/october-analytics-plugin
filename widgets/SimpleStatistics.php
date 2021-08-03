@@ -28,7 +28,7 @@ class SimpleStatistics extends ReportWidgetBase
                 'title' => 'synder.analytics::lang.widgets.statistics.color_views',
                 'type' => 'string',
                 'default' => '#86CB43',
-                'placeholder' => '#000000',
+                'placeholder' => '#86CB43',
                 'validationPattern' => '^\#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$',
                 'validationMessage' => 'synder.analytics::lang.widgets.statistics.color_error'
             ],
@@ -36,7 +36,7 @@ class SimpleStatistics extends ReportWidgetBase
                 'title' => 'synder.analytics::lang.widgets.statistics.color_visits',
                 'type' => 'string',
                 'default' => '#008dc9',
-                'placeholder' => '#000000',
+                'placeholder' => '#008dc9',
                 'validationPattern' => '^\#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$',
                 'validationMessage' => 'synder.analytics::lang.widgets.statistics.color_error'
             ],
@@ -44,7 +44,7 @@ class SimpleStatistics extends ReportWidgetBase
                 'title' => 'synder.analytics::lang.widgets.statistics.color_visitors',
                 'type' => 'string',
                 'default' => '#FF2D20',
-                'placeholder' => '#000000',
+                'placeholder' => '#FF2D20',
                 'validationPattern' => '^\#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$',
                 'validationMessage' => 'synder.analytics::lang.widgets.statistics.color_error'
             ]
