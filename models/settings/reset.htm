@@ -1,0 +1,18 @@
+
+
+
+<div class="synder-analytics-dev" data-synder-handle="dev-reevaluate">
+    <input type="hidden" name="<?= e($field->getName()) ?>" value="0" />
+    <button type="button" class="btn btn-secondary">
+        <?= e(trans('synder.analytics::lang.config.dev_reevaluate')) ?>
+    </button>
+</div>
+
+<script type="text/javascript">
+    jQuery(function ($) {
+        $('[data-synder-handle="dev-reevaluate"] button').on('click', function (event) {
+            this.previousElementSibling.value = this.previousElementSibling.value === '1'? '0': '1';
+            $('form[action$="analytics/settings"] > .form-buttons [type="submit"]').click();
+        });
+    });
+</script>

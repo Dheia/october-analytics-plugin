@@ -47,7 +47,7 @@ class AnalyticsMiddleware
         }
 
         // Handle other Responses
-        if ($response === null) {
+        if (!isset($response) || $response === null) {
             $response = $next($request);
         }
 
@@ -100,9 +100,16 @@ class AnalyticsMiddleware
         if (($user = $this->getUser($request, null)) === false) {
             return;
         }
-        $user->addBotDetail("$type" . "_trap", true);
-        $user->evaluate();
+        $user->addBotDetail($type . '_trap', true);
+        $user->evaluate(false);
         $user->save();
+
+        // Update Link
+        if (Settings::get('bot_' . $type . '_relocate') === '1') {
+            if (time() - Settings::get('bot_' . $type . '_time') > 90 * 24 * 60 * 60) {
+                Settings::set('bot_' . $type . '_link', '0');
+            }
+        }
 
         // Return Redirect
         return HttpResponse::create('', 303, [

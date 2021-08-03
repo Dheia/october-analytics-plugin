@@ -63,17 +63,31 @@ class Plugin extends PluginBase
      */
     public function boot()
     {
+        if (Settings::get('dev_reevaluate') === 1) {
+            $items = Visitor::all();
+            foreach ($items AS $item) {
+                $item->evaluate(true);
+            }
+            Settings::set('dev_reevaluate', 0);
+        }
+
+        if (Settings::instance()->getRobotsTxtProvider() === 'mohsin.txt') {
+            if (Settings::get('bot_robots') === '1') {
+                \Mohsin\Txt\Models\Robot::extend(function($model) {
+                    $model->bindEvent('model.afterFetch', function() use ($model) {
+                        if ($model->agent === '*:synder') {
+                            $model->agent = '*';
+                        }
+                    });
+                });
+            }
+        }
+
         CmsController::extend(function($controller) {
             $controller->middleware(AnalyticsMiddleware::class);
         });
 
         RequestPage::extend(fn($model) => $this->extendPageModel($model));
-
-        
-        $items = Visitor::all();
-        foreach ($items AS $item) {
-            $item->evaluate(true);
-        }
 
         //@todo
         //Event::listen('backend.menu.extendItems', function (NavigationManager $manager) {

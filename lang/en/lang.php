@@ -108,6 +108,10 @@ return [
             'friday' => 'Friday',
             'saturday' => 'Saturday'
         ],
+        
+        'section_development' => 'Development Options',
+        'dev_reevaluate' => 'Re-Evaluate User Agents',
+        'dev_reevaluate_desc' => 'Manually re-evaluate Bot Probability depending on the stored User Agent.',
 
         'bot_lazy' => 'Lazy Bot Evaluation',
         'bot_lazy_desc' => 'The performance of the visitor is not impaired by a lazy bot evaluation.<br />Set this to \'On\' if you\'re using the Bot-probability filter for the statistics only.',

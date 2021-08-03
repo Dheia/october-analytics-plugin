@@ -2,6 +2,7 @@
 
 namespace Synder\Analytics\Models;
 
+use Exception;
 use Session;
 use October\Rain\Database\Model;
 
@@ -78,6 +79,19 @@ class Visitor extends Model
      */
     public function evaluate($save = false)
     {
+        if (!empty($this->agent)) {
+            if ($this->agent[0] === '{') {
+                try {
+                    $this->agent = json_decode($this->agent, true)['agent'];
+                } catch (\Exception $exception) {
+                    $this->agent = '';
+                }
+            }
+            if ($this->agent[0] === '"' && strrpos($this->agent, '"') === strlen($this->agent)-1) {
+                $this->agent = substr($this->agent, 1, -2);
+            }
+        }
+
         $detect = new BotProbability($this->agent);
         if (!empty($this->bot_details)) {
             if (isset($this->bot_details['robots_trap'])) {
@@ -90,13 +104,12 @@ class Visitor extends Model
         $detect->parse();
 
         if ($save) {
-            $this->update([
-                'bot' => $detect->getProbability(),
-                'bot_details' => $detect->probabilities,
-                'agent_details' => $detect->getFullDetails(),
-                'browser' => $detect->getBrowserDetail(),
-                'os' => $detect->getOsDetail()
-            ]);
+            $this->bot = $detect->getProbability();
+            $this->bot_details = $detect->probabilities;
+            $this->agent_details = $detect->getFullDetails();
+            $this->browser = $detect->getBrowserDetail();
+            $this->os = $detect->getOsDetail();
+            $this->save();
         } else {
             $this->bot = $detect->getProbability();
             $this->bot_details = $detect->probabilities;

@@ -8,11 +8,114 @@ use DeviceDetector\DeviceDetector;
 class BotProbability extends DeviceDetector
 {
     /**
+     * USER_AGENT
+     * Just 'don't trust anyone' basic value.
+     */
+    const DONT_TRUST_ANYONE = 0.1;
+
+    /**
+     * USER_AGENT
+     * Small Crawler Jobs or Test Applications and Scripts may don't add an User Agent at all.
+     * Security-Aimed Users and Browsers avoid this header value as well.
+     */
+    const NO_USER_AGENT = 4.5;
+
+    /**
+     * USER_AGENT
+     * Suspicious and known user agents, such as python-requests or Postman* are, and similar ones.
+     */
+    const SUSPICIOUS_USER_AGENT = 4.8;
+
+    /**
+     * USER_AGENT
+     * Crawler, Spiders and Bots which reveal themselves (based on Matomo's DeviceDetector)
+     */
+    const BOT_USER_AGENT = 4.8;
+
+    /**
+     * BROWSER
+     * Unkown Browsers are most-likly no good sign.
+     */
+    const UNKNOWN_BROWER = 2.5;
+
+    /**
+     * BROWSER
+     * Deprecated Browsers are used or pretent to be used by bots and similar scripts.
+     */
+    const DEPRECATED_BROWER = 2.7;
+
+    /**
+     * BROWSER
+     * Highly deprecated browsers are mainly used or pretent to be used by bots and similar scripts.
+     */
+    const HIGHLY_DEPRECATED_BROWSER = 3.5;
+
+    /**
+     * BROWSER
+     * Real Human Visitors don't use a browser without GUI.
+     */
+    const HEADLESS_BROWSER = 4.5;
+
+    /**
+     * BROWSER
+     * No Browser no human!
+     */
+    const NO_BROWSER = 3.5;
+
+    /**
+     * OPERATING SYSTEM
+     * Unkown os' are most-likly no good sign.
+     */
+    const UNKNOWN_OS = 2.0;
+
+    /**
+     * OPERATING SYSTEM
+     * Deprecated os' are used or pretent to be used by bots and similar scripts.
+     */
+    const DEPRECATED_OS = 1.4;
+
+    /**
+     * OPERATING SYSTEM
+     * Highy deprecated os' are mainly used or pretend to be used by bots and similar scripts.
+     */
+    const HIGHLY_DEPRECATED_OS = 2.0;
+
+    /**
+     * OPERATING SYSTEM
+     * No OS no human!
+     */
+    const NO_OS = 1.5;
+
+    /**
+     * TRAP
+     * Someone or Something trapped in our Robots honeypot, could also a curious human.
+     */
+    const ROBOTS_TRAP = 1.8;
+
+    /**
+     * TRAP
+     * Someone or Something trapped in our InvisibleLink honeypot, could also a curious human.
+     */
+    const INLINK_TRAP = 1.8;
+
+
+    /**
      * Bot Probability Value
      *
      * @var array
      */
     public $probabilities = [];
+
+    /**
+     * Suspicious User Agents
+     * 
+     * @var array
+     */
+    public $suspiciousAgents = [
+        '/^python/i',
+        '/^Postman/i',
+        '/Google Favicon?/'
+    ];
 
     /**
      * Constructor
@@ -21,35 +124,7 @@ class BotProbability extends DeviceDetector
      */
     public function __construct($agent)
     {
-        parent::__construct($agent);
-    }
-
-    /**
-     * Set RobotsTXT Trap
-     * 
-     * @return void
-     */
-    public function setRobotsTrap(bool $value)
-    {
-        if ($value) {
-            $this->addProbability('robots_trap', 1.5);
-        } else {
-            $this->addProbability('robots_trap', -0.5);
-        }
-    }
-
-    /**
-     * Set Invisible Link Trap
-     * 
-     * @return void
-     */
-    public function setInvisibleLinkTrap(bool $value)
-    {
-        if ($value) {
-            $this->addProbability('inlink_trap', 1.2);
-        } else {
-            $this->addProbability('inlink_trap', -0.5);
-        }
+        parent::__construct($agent ?? '');
     }
 
     /**
@@ -70,6 +145,25 @@ class BotProbability extends DeviceDetector
     }
 
     /**
+     * Check if User Agent is suspicious
+     *
+     * @return boolean
+     */
+    public function isSuspiciousUserAgent(): bool
+    {
+        if (empty($this->userAgent)) {
+            return false;
+        }
+
+        foreach ($this->suspiciousAgents AS $agent) {
+            if (preg_match($agent, $this->userAgent) === 1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Add Probability Value
      *
      * @param float $amount
@@ -81,85 +175,99 @@ class BotProbability extends DeviceDetector
     }
 
     /**
+     * Set RobotsTXT Trap
+     * 
+     * @return void
+     */
+    public function setRobotsTrap(bool $value)
+    {
+        if ($value) {
+            $this->addProbability('robots_trap', self::ROBOTS_TRAP);
+        }
+    }
+
+    /**
+     * Set Invisible Link Trap
+     * 
+     * @return void
+     */
+    public function setInvisibleLinkTrap(bool $value)
+    {
+        if ($value) {
+            $this->addProbability('inlink_trap', self::INLINK_TRAP);
+        }
+    }
+
+    /**
      * Calculate Probability
      *
      * @return void
      */
     protected function calculateProbability()
     {
+        $this->addProbability('dont_trust', self::DONT_TRUST_ANYONE);
+
+        // User Agents
+        // @todo improve
         if (empty($this->userAgent)) {
-            $this->addProbability('no_user_agent', 3.7);
+            $this->addProbability('no_user_agent', self::NO_USER_AGENT);
             return;
         }
-
-        // Filter Python Requests
-        if (strpos($this->userAgent, 'python-requests') === 0) {
-            $this->addProbability('invalid_user_agent', 4.8);
+        if ($this->isSuspiciousUserAgent()) {
+            $this->addProbability('suspicious_user_agent', self::SUSPICIOUS_USER_AGENT);
             return;
         }
-
-        // An extremly low audience may pretent to be a bot, mainly to don't get tracked or 
-        // recognized by any website or service.
         if ($this->isBot()) {
-            $this->addProbability('user_agent', 4.8);
+            $this->addProbability('bot_user_agent', self::BOT_USER_AGENT);
         }
 
-        // Old browser Detection
-        //  Will be improved soon...
+        // Client / Browser
+        // @todo improve
         if (!empty($this->client)) {
             [$browser, $version] = [$this->client['short_name'] ?? 'unknown', $this->client['version']];
 
-            if ($browser === 'FF') {
-                $this->addProbability('deprecated_browser', version_compare($version, '10.0', '<')? 0.2: -0.2);
-            }
-            else if ($browser === 'BR') {
-                $this->addProbability('deprecated_browser', -0.2);
-            }
-            else if ($browser === 'CL') {
-                $this->addProbability('deprecated_browser', -0.2);
+            if ($browser === 'FF' && version_compare($version, '10.0', '<')) {
+                $this->addProbability('deprecated_browser', self::DEPRECATED_BROWER);
             }
             else if ($browser === 'CF') {
-                $this->addProbability('deprecated_browser', 0.2);
+                $this->addProbability('deprecated_browser', self::DEPRECATED_BROWER);
             }
             else if ($browser === 'HC') {
-                $this->addProbability('deprecated_browser', 0.5);
+                $this->addProbability('headless_browser', self::HEADLESS_BROWSER);
             }
-            else if ($browser === 'CH' || $browser === 'CR') {
-                $this->addProbability('deprecated_browser', version_compare($version, '28.0.0', '<')? 0.2: -0.2);
+            else if (($browser === 'CH' || $browser === 'CR') && version_compare($version, '28.0.0', '<')) {
+                $this->addProbability('deprecated_browser', self::DEPRECATED_BROWER);
             }
             else if ($browser === 'IE') {
-                $this->addProbability('deprecated_browser', version_compare($version, '8.0.0', '<')? 0.2: -0.2);
+                if (version_compare($version, '6.0.0', '<')) {
+                    $this->addProbability('deprecated_browser', self::HIGHLY_DEPRECATED_BROWSER);
+                } else if (version_compare($version, '8.0.0', '<')) {
+                    $this->addProbability('deprecated_browser', self::DEPRECATED_BROWER);
+                }
             }
             else if ($browser === 'KO') {
-                $this->addProbability('deprecated_browser', 0.2);
+                $this->addProbability('deprecated_browser', self::DEPRECATED_BROWER);
             }
             else if ($browser === 'NS') {
-                $this->addProbability('deprecated_browser', 0.2);
+                $this->addProbability('deprecated_browser', self::HIGHLY_DEPRECATED_BROWSER);
             }
             else if ($browser === 'unknown') {
-                $this->addProbability('unknown_browser', 1.1);
-            }
-            else {
-                $this->addProbability('deprecated_browser', -0.1);
+                $this->addProbability('unknown_browser', self::UNKNOWN_BROWER);
             }
         } else {
-            $this->addProbability('no_browser', 2.4);
+            $this->addProbability('no_browser', self::NO_BROWSER);
         }
 
-        // Old System Detection
-        //  Coming Soon...
+        // Operating System
+        // @todo improve
         if (!empty($this->os)) {
             [$os, $version] = [$this->os['short_name'] ?? 'unknown', $this->os['version']];
 
             if ($os === 'unknown') {
-                $this->addProbability('unknown_os', 1.1);
+                $this->addProbability('unknown_os', self::UNKNOWN_OS);
             }
         } else {
-            $this->addProbability('no_os', 2.4);
-        }
-
-        if (strpos($this->userAgent, 'Expanse') === 0) {
-            dd($this->probabilities);
+            $this->addProbability('no_os', self::NO_OS);
         }
     }
 

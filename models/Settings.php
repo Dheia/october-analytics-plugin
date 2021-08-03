@@ -77,6 +77,8 @@ class Settings extends Model
         $this->weekstart = 0;
         $this->dateformat = 'plain';
 
+        $this->dev_reevaluate = 1;
+
         $this->bot_lazy = 1;
         $this->bot_filter = 4.2;
 
@@ -138,9 +140,9 @@ class Settings extends Model
     {
         $plugins = PluginManager::instance();
 
-        if ($plugins->exists('arcane.seo')) {
+        if ($plugins->exists('Arcane.Seo')) {
             return 'arcane.seo';
-        } else if ($plugins->exists('mohsin.txt')) {
+        } else if ($plugins->exists('Mohsin.Txt')) {
             return 'mohsin.txt';
         } else if ($plugins->exists('Zen.Robots')) {
             return 'zen.robots';
@@ -156,21 +158,96 @@ class Settings extends Model
      */
     public function updateRobotsTxtProvider()
     {
-        if ($this->getRobotsTxtProvider() === 'synder.analytics') {
-            return;
+        $this->reload();
+
+        if ($this->getRobotsTxtProvider() === 'arcane.seo') {
+            $content = \Arcane\Seo\Models\Settings::get('robots_txt');
+            if (empty($content)) {
+                $content = "User-Agent: *\r\nAllow: /";
+            }
+
+            // Strip Honeypot
+            [$start, $end] = [strpos($content, '#[synder'), strpos($content, '#[/synder]')];
+            if ($start !== false) {
+                $content = substr($content, 0, $start) . substr($content, $end + 12);
+            }
+            
+            // Add Honeypot & Store
+            if ($this->value['bot_robots'] === '1') {
+                $content = trim($content) . $this->generateRobotsTxt();
+
+                if (\Arcane\Seo\Models\Settings::get('enable_robots_txt') === '0') {
+                    \Arcane\Seo\Models\Settings::set('enable_robots_txt', '1');
+                }
+            }
+            \Arcane\Seo\Models\Settings::set('robots_txt', $content);
+        }
+
+        if ($this->getRobotsTxtProvider() === 'mohsin.txt') {
+            $agent = \Mohsin\Txt\Models\Agent::where([
+                'name' => '*:synder',
+                'comment' => 'Synder Analytics'
+            ])->first();
+            $robot = \Mohsin\Txt\Models\Robot::where([
+                'agent' => '*:synder',
+            ])->first();
+
+            if ($this->value['bot_robots'] === '1') {
+                if (empty($agent)) {
+                    $agent = new \Mohsin\Txt\Models\Agent();
+                    $agent->name = '*:synder';
+                    $agent->comment = 'Synder Analytics';
+                    $agent->save();
+                }
+                if (empty($robot)) {
+                    $robot = new \Mohsin\Txt\Models\Robot();
+                    $robot->agent = '*:synder';
+                    $robot->save();
+                }
+
+                $directive = \Mohsin\Txt\Models\Directive::where([
+                    'robot_id' => $robot->id
+                ])->first();
+
+                if (empty($directive)) {
+                    $directive = new \Mohsin\Txt\Models\Directive();
+                    $directive->robot_id = $robot->id;
+                } 
+                $directive->type = 'Disallow';
+                $directive->data = '/' . $this->value['bot_robots_link'];
+                $directive->position = 999;
+                $directive->save();
+            } else {
+                if (!empty($robot)) {
+                    $directive = \Mohsin\Txt\Models\Directive::where([
+                        'robot_id' => $robot->id
+                    ])->first();
+                    
+                    if (!empty($directive)) {
+                        $directive->delete();
+                    }
+                    $robot->delete();
+                }
+                if (!empty($agent)) {
+                    $agent->delete();
+                }
+            }
         }
 
         if ($this->getRobotsTxtProvider() === 'zen.robots') {
             $content = \Zen\Robots\Models\Settings::get('content');
 
+            // Strip Honeypot
             [$start, $end] = [strpos($content, '#[synder'), strpos($content, '#[/synder]')];
             if ($start !== false) {
                 $content = substr($content, 0, $start) . substr($content, $end + 12);
             }
-            $content = trim($content) . $this->generateRobotsTxt();
             
+            // Add Honeypot & Store
+            if ($this->value['bot_robots'] === '1') {
+                $content = trim($content) . $this->generateRobotsTxt();
+            }
             \Zen\Robots\Models\Settings::set('content', $content);
-            return;
         }
     }
 

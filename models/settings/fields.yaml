@@ -57,6 +57,17 @@ tabs:
       span: row
       spanClass: col-xs-12 col-md-4
 
+    section_development:
+      tab: synder.analytics::lang.config._tabs.general
+      type: section
+      label: synder.analytics::lang.config.section_development
+      
+    dev_reevaluate:
+      tab: synder.analytics::lang.config._tabs.general
+      type: partial
+      path: $/synder/analytics/models/settings/reset.htm
+      comment: synder.analytics::lang.config.dev_reevaluate_desc
+
     # Bots Settings
     bot_lazy:
       tab: synder.analytics::lang.config._tabs.bots

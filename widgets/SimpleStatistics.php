@@ -6,7 +6,7 @@ use Backend\Classes\ReportWidgetBase;
 
 use Synder\Analytics\Classes\DateTime;
 use Synder\Analytics\Models\Request;
-
+use Synder\Analytics\Models\Settings;
 
 class SimpleStatistics extends ReportWidgetBase
 {
@@ -96,9 +96,16 @@ class SimpleStatistics extends ReportWidgetBase
      */
     public function render()
     {
-        $stats = Request::selectRaw('SUM(views) as views, COUNT(id) as visits, COUNT(DISTINCT(visitor_id)) as visitors, DATE(created_at) AS date')
+        $stats = Request::selectRaw('
+                SUM(synder_analytics_requests.views)                    AS  views, 
+                COUNT(synder_analytics_requests.id)                     AS  visits, 
+                COUNT(DISTINCT(synder_analytics_requests.visitor_id))   AS  visitors, 
+                DATE(synder_analytics_requests.created_at)              AS  date
+            ')
             ->groupByRaw('DATE(created_at)')
             ->orderByRaw('DATE(created_at) DESC')
+            ->join('synder_analytics_visitors', 'synder_analytics_visitors.id', '=', 'synder_analytics_requests.visitor_id')
+            ->where('synder_analytics_visitors.bot', '<', intval(Settings::get('bot_filter')))
             ->limit(7)
             ->get()
             ->mapWithKeys(fn ($item, $key) => [$item['date'] => $item])

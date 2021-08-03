@@ -70,21 +70,25 @@ class SimpleSystems extends ReportWidgetBase
                 $browser = explode(' ', $item->browser);
                 array_pop($browser);
                 $browser = implode(' ', $browser);
-                
-                if (!array_key_exists($browser, $this->vars['browserlist'])) {
-                    $this->vars['browserlist'][$browser] = 0;
-                }
-                $this->vars['browserlist'][$browser]++;
-                $this->vars['counters'][0]++;
+            } else {
+                $browser = 'Unknown Browser';
             }
-
+            if (!array_key_exists($browser, $this->vars['browserlist'])) {
+                $this->vars['browserlist'][$browser] = 0;
+            }
+            $this->vars['browserlist'][$browser]++;
+            $this->vars['counters'][0]++;
+            
             if (!empty($item->os)) {
-                if (!array_key_exists($item->os, $this->vars['oslist'])) {
-                    $this->vars['oslist'][$item->os] = 0;
-                }
-                $this->vars['oslist'][$item->os]++;
-                $this->vars['counters'][1]++;
+                $os = $item->os;
+            } else {
+                $os = 'Unknown OS';
             }
+            if (!array_key_exists($os, $this->vars['oslist'])) {
+                $this->vars['oslist'][$os] = 0;
+            }
+            $this->vars['oslist'][$os]++;
+            $this->vars['counters'][1]++;
         }
 
         $this->prepareChartOptions($data);

@@ -75,8 +75,8 @@ Requirements
 The robots.txt honeypot can be used without additional dependencies, but if one of the following 
 plugins is found, those functionality will be used instead. 
 
--   [Arcane.SEO](https://octobercms.com/plugin/arcane-seo)
--   [Mohsin.TXT](https://octobercms.com/plugin/mohsin-txt)
+-   [Arcane.Seo](https://octobercms.com/plugin/arcane-seo)
+-   [Mohsin.Txt](https://octobercms.com/plugin/mohsin-txt)
 -   [Zen.Robots](https://octobercms.com/plugin/zen-robots)
 
 
