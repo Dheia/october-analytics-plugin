@@ -2,8 +2,6 @@
 
 namespace Synder\Analytics\Models;
 
-use Exception;
-use Session;
 use October\Rain\Database\Model;
 
 use Synder\Analytics\Classes\BotProbability;

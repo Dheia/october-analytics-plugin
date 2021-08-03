@@ -6,6 +6,7 @@ use Model;
 use System\Behaviors\SettingsModel;
 use System\Classes\PluginManager;
 
+
 class Settings extends Model
 {
     /**

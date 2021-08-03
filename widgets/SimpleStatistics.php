@@ -8,6 +8,7 @@ use Synder\Analytics\Classes\DateTime;
 use Synder\Analytics\Models\Request;
 use Synder\Analytics\Models\Settings;
 
+
 class SimpleStatistics extends ReportWidgetBase
 {
     /**

@@ -3,8 +3,10 @@
 namespace Synder\Analytics\Widgets;
 
 use Backend\Classes\ReportWidgetBase;
+
 use Synder\Analytics\Models\Settings;
 use Synder\Analytics\Models\Visitor;
+
 
 class SimpleSystems extends ReportWidgetBase
 {

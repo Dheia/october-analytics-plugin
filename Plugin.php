@@ -2,14 +2,13 @@
 
 namespace Synder\Analytics;
 
-use Backend;
 use Event;
-use Backend\Classes\NavigationManager;
 use Cms\Classes\CmsController;
 use Cms\Classes\Page as RequestPage;
-use Illuminate\Support\Facades\DB;
+use October\Rain\Exception\SystemException;
 use Synder\Analytics\FormWidgets\Slider;
 use System\Classes\PluginBase;
+use System\Models\PluginVersion;
 
 use Synder\Analytics\Middleware\AnalyticsMiddleware;
 use Synder\Analytics\Models\Page;
@@ -64,6 +63,15 @@ class Plugin extends PluginBase
      */
     public function boot()
     {
+        $installedVersion = PluginVersion::where('code', 'Synder.Analytics')->first();
+        if ($installedVersion === null || !version_compare($installedVersion->version, self::VERSION, '=')) {
+            if (php_sapi_name() === 'cli') {
+                return;
+            }
+            throw new SystemException('Please run "php artisan october:migrate" to install and update Synder.Analytics.');
+        }
+
+        // Check Internal Version
         $version = Settings::get('version', '1.0.2');
         if (version_compare($version, self::VERSION, "<")) {
             $this->upgrade($version);

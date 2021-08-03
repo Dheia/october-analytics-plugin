@@ -9,13 +9,13 @@ use Log;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Support\Str;
-use Synder\Analytics\Classes\BotProbability;
+
 use Synder\Analytics\Models\Page;
 use Synder\Analytics\Models\Referrer;
 use Synder\Analytics\Models\Request;
 use Synder\Analytics\Models\Settings;
 use Synder\Analytics\Models\Visitor;
-use System\Helpers\View;
+
 
 class AnalyticsMiddleware
 {
