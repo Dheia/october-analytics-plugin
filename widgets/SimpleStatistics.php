@@ -47,7 +47,15 @@ class SimpleStatistics extends ReportWidgetBase
                 'placeholder' => '#FF2D20',
                 'validationPattern' => '^\#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$',
                 'validationMessage' => 'synder.analytics::lang.widgets.statistics.color_error'
-            ]
+            ],
+            'days' => [
+                'title' => 'synder.analytics::lang.widgets.statistics.days',
+                'type' => 'string',
+                'default' => '7',
+                'placeholder' => '',
+                'validationPattern' => '[0-9]+',
+                'validationMessage' => 'synder.analytics::lang.widgets.statistics.days_error'
+            ]			
         ];
     }
 
@@ -107,7 +115,7 @@ class SimpleStatistics extends ReportWidgetBase
             ->orderByRaw('DATE(created_at) DESC')
             ->join('synder_analytics_visitors', 'synder_analytics_visitors.id', '=', 'synder_analytics_requests.visitor_id')
             ->where('synder_analytics_visitors.bot', '<', intval(Settings::get('bot_filter', 4.2)))
-            ->limit(7)
+            ->limit($this->property('days', '7'))
             ->get()
             ->mapWithKeys(fn ($item, $key) => [$item['date'] => $item])
             ->toArray();
@@ -119,7 +127,7 @@ class SimpleStatistics extends ReportWidgetBase
         $visitors = [];
 
         $datetime = new DateTime();
-        foreach ($datetime->each('-P1D', 7, 'Y-m-d') AS $key) {
+        foreach ($datetime->each('-P1D', $this->property('days', '7'), 'Y-m-d') AS $key) {
             if (array_key_exists($key, $stats)) {
                 $item = $stats[$key];
             } else {

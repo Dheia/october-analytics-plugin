@@ -28,7 +28,9 @@ return [
             'color_views' => 'Views Color',
             'color_visits' => 'Visits Color',
             'color_visitors' => 'Visitors Color',
-            'color_error' => 'Please enter a valid HEX color value (ex.: #008dc9).'
+            'color_error' => 'Please enter a valid HEX color value (ex.: #008dc9).',
+			'days' => 'Days period' ,
+			'days_error' => 'Please enter valid days number',
         ],
         'systems' => [
             'label' => 'Simple Statistics - Browser / OS Usage',
