@@ -1,10 +1,6 @@
-
 .synder-widget-analytics-systems .control-list {
     margin-bottom: 0;
 }
 .synder-widget-analytics-systems .chart-legend {
     height: auto !important;
-}
-.synder-widget-analytics-systems .hide-legend .chart-legend {
-    display: none !important;
 }

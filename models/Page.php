@@ -53,44 +53,4 @@ class Page extends Model
         'views',
         'visits'
     ];
-
-    /**
-     * Views TWIG Markup Filer
-     *
-     * @param string $path
-     * @return void
-     */
-    static public function markupViews($path)
-    {
-        if (strpos($path, 'http') === 0) {
-            $path = parse_url($path, \PHP_URL_PATH);
-        }
-
-        $page = static::where('path', $path)->first();
-        if ($page) {
-            return $page->views;
-        } else {
-            return 0;
-        }
-    }
-
-    /**
-     * Visits TWIG Markup Filer
-     *
-     * @param string $path
-     * @return void
-     */
-    static public function markupVisits($path)
-    {
-        if (strpos($path, 'http') === 0) {
-            $path = parse_url($path, \PHP_URL_PATH);
-        }
-
-        $page = static::where('path', $path)->first();
-        if ($page) {
-            return $page->visits;
-        } else {
-            return 0;
-        }
-    }
 }

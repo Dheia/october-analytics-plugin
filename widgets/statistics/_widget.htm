@@ -2,68 +2,52 @@
     <h3><?= e(trans('synder.analytics::lang.widgets.statistics.title')) ?></h3>
 
     <div
-        data-synder-analytics="systems"
         data-control="chart-line"
         data-time-mode="weeks"
         style="height: 200px"
-        data-chart-options="<?= e($config) ?>">
+        data-chart-options="xaxis: {mode: 'time', minTickSize: [1, 'day'], timeformat: '%Y/%m/%d'}, yaxis: {min: 0, minTickSize: 1, tickDecimals: 0}, legend: { show: true, noColumns: 1, container: '.my-container' }">
         <span
             data-chart="dataset"
-            data-set-color="<?= e($colors['view']) ?>"
+            data-set-color="#86CB43"
             data-set-data="<?= e($views) ?>"
             data-set-name="<?= e(trans('synder.analytics::lang.widgets.statistics.views')) ?>">
         </span>
         <span
             data-chart="dataset"
-            data-set-color="<?= e($colors['visit']) ?>"
+            data-set-color="#008dc9"
             data-set-data="<?= e($visits) ?>"
             data-set-name="<?= e(trans('synder.analytics::lang.widgets.statistics.visits')) ?>">
         </span>
         <span
             data-chart="dataset"
-            data-set-color="<?= e($colors['visitor']) ?>"
+            data-set-color="#FF2D20"
             data-set-data="<?= e($visitors) ?>"
             data-set-name="<?= e(trans('synder.analytics::lang.widgets.statistics.visitors')) ?>">
         </span>
     </div>
 
-    <ul class="chart-legend">
-        <li class="info"><span><?= e(trans('synder.analytics::lang.widgets.statistics.toggle')) ?></span></li>
-
-        <li class="chart-item" data-toggle="views">
-            <i style="background-color: <?= e($colors['view']) ?>;"></i>
-            <span><?= e(trans('synder.analytics::lang.widgets.statistics.views')) ?></span>
-
-            <?php if (isset($counts)): ?>
-                <div class="chart-couter">
-                    <span><?= e($counts['views'][1]) ?> / <?= e($counts['views'][0]) ?></span>
-                    <span><?= e(trans('synder.analytics::lang.widgets.statistics.count_value')) ?></span>
-                </div>
-            <?php endif ?>
-        </li>
-        
-        <li class="chart-item" data-toggle="visits">
-            <i style="background-color: <?= e($colors['visit']) ?>;"></i>
-            <span><?= e(trans('synder.analytics::lang.widgets.statistics.visits')) ?></span>
-
-            <?php if (isset($counts)): ?>
-                <div class="chart-couter">
-                    <span><?= e($counts['visits'][1]) ?> / <?= e($counts['visits'][0]) ?></span>
-                    <span><?= e(trans('synder.analytics::lang.widgets.statistics.count_value')) ?></span>
-                </div>
-            <?php endif ?>
-        </li>
-        
-        <li class="chart-item" data-toggle="visitors">
-            <i style="background-color: <?= e($colors['visitor']) ?>;"></i>
-            <span><?= e(trans('synder.analytics::lang.widgets.statistics.visitors')) ?></span>
-
-            <?php if (isset($counts)): ?>
-                <div class="chart-couter">
-                    <span><?= e($counts['visitors'][1]) ?> / <?= e($counts['visitors'][0]) ?></span>
-                    <span><?= e(trans('synder.analytics::lang.widgets.statistics.count_value')) ?></span>
-                </div>
-            <?php endif ?>
-        </li>
-    </ul>
+    <div class="chart-legend">
+        <table>
+            <tr>
+                <td class="indicator">
+                    <i style="background-color: #86CB43;"></i>
+                </td>
+                <td><?= e(trans('synder.analytics::lang.widgets.statistics.views')) ?></td>
+            </tr>
+            
+            <tr>
+                <td class="indicator">
+                    <i style="background-color: #008dc9;"></i>
+                </td>
+                <td><?= e(trans('synder.analytics::lang.widgets.statistics.visits')) ?></td>
+            </tr>
+            
+            <tr>
+                <td class="indicator">
+                    <i style="background-color: #FF2D20;"></i>
+                </td>
+                <td><?= e(trans('synder.analytics::lang.widgets.statistics.visitors')) ?></td>
+            </tr>
+        </table>
+    </div>
 </div>
